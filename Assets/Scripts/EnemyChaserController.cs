@@ -20,7 +20,7 @@ public class EnemyChaserController : MonoBehaviour
     private bool isChasing = false;
     private float chaseRadiusSqr = 225.0f; // can be adjusted, using 15^2 for faster computation
     private float walkSpeed = 2.5f; // can be adjusted
-    private float runSpeed = 7.5f; // can be adjusted
+    private float runSpeed = 7.0f; // can be adjusted
     private float searchRadius = 50.0f; // can be adjusted
     private float timer = 0;
     private float update = 0.5f;
@@ -30,6 +30,8 @@ public class EnemyChaserController : MonoBehaviour
         player = GameObject.Find("PLAYER");
         agent = transform.GetComponent<NavMeshAgent>();
         agent.speed = walkSpeed;
+        agent.acceleration = 16;
+        agent.angularSpeed = 240;
         StartCoroutine(MoveToRandomPoint());
     }
 
@@ -41,6 +43,7 @@ public class EnemyChaserController : MonoBehaviour
         if (timer > update)
         {
             SlowUpdate();
+            timer = 0;
         }
     }
 

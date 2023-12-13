@@ -46,6 +46,9 @@ public class MazeGenerator : MonoBehaviour
     public bool usePatrollers;
     public float patrollerPercentage;
     public int patrollerMinCount;
+    public bool useHunters;
+    public float hunterPercentage;
+    public int hunterMinCount;
     public float healthPercentage;
     public float speedPercentage;
     public int healthMinCount;
@@ -63,8 +66,9 @@ public class MazeGenerator : MonoBehaviour
     public static readonly string POOF_TRAP = "⌖";
     public static readonly string HEALTH_BOOST = "♥"; //♡
     public static readonly string SPEED_BOST = "⇪"; //↑
-    public static readonly string CHASER = "E";
-    public static readonly string PATROLLER = "e";
+    public static readonly string CHASER = "C";
+    public static readonly string PATROLLER = "P";
+    public static readonly string HUNTER = "H";
     public static readonly string[] digits = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };  // For convenience
     private int[] digitCounts = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     public static readonly string[] operators = { ADD, SUBTRACT, MULTIPLY, DIVIDE };
@@ -75,9 +79,9 @@ public class MazeGenerator : MonoBehaviour
     private float[] trapPercentages;
     private int[] trapCounts = { 0, 0 };
     private int[] trapMinimums;
-    static readonly string[] enemies = { CHASER, PATROLLER };
+    static readonly string[] enemies = { CHASER, PATROLLER, HUNTER };
     private float[] enemyPercentages;
-    private int[] enemyCounts = { 0, 0 };
+    private int[] enemyCounts = { 0, 0, 0 };
     private int[] enemyMinimums;
     public static readonly string[] boosts = { HEALTH_BOOST, SPEED_BOST };
     public static readonly Color[] boostColors = { Color.red, Color.green };
@@ -294,6 +298,11 @@ public class MazeGenerator : MonoBehaviour
                 {
                     grid[i, j][directionIndex(CENTER)] = FLOOR;
                 }
+                // remove hunters from non-ground floors
+                if(floor > 0 && grid[i, j][directionIndex(CENTER)] == HUNTER)
+                {
+                    grid[i, j][directionIndex(CENTER)] = FLOOR;
+                }
             }
         }
 
@@ -316,7 +325,7 @@ public class MazeGenerator : MonoBehaviour
             {
                 for (int j = centerHighStart; j <= centerHighEnd; j++)
                 {
-                    if (grid[i, j][directionIndex(CENTER)] == CHASER || grid[i, j][directionIndex(CENTER)] == PATROLLER)
+                    if (grid[i, j][directionIndex(CENTER)] == CHASER || grid[i, j][directionIndex(CENTER)] == PATROLLER || grid[i, j][directionIndex(CENTER)] == HUNTER)
                     {
                         grid[i, j][directionIndex(CENTER)] = FLOOR;
                     }
@@ -396,8 +405,8 @@ public class MazeGenerator : MonoBehaviour
         operatorMinimums = new[] { addMinCount, subtractMinCount, multiplyMinCount, divideMinCount };
         trapPercentages = new[] { pitPercentage, poofPercentage };
         trapMinimums = new[] { pitTrapsMinCount, poofTrapsMinCount };
-        enemyPercentages = new[] { chaserPercentage, patrollerPercentage };
-        enemyMinimums = new[] { chaserMinCount, patrollerMinCount };
+        enemyPercentages = new[] { chaserPercentage, patrollerPercentage, hunterPercentage };
+        enemyMinimums = new[] { chaserMinCount, patrollerMinCount, hunterMinCount };
         boostPercentages = new[] { healthPercentage, speedPercentage };
         boostMinumums = new[] { healthMinCount, speedMinCount };
         specialFloorPercentages = new[] { digitPercentages, operatorPercentages, trapPercentages, enemyPercentages, boostPercentages };

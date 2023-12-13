@@ -16,9 +16,8 @@ public class EnemyPatrollerController : MonoBehaviour
 
     // properties of PATROLLER enemy
     private Vector3[] patrolPoints = new Vector3[3];
-    private Color[] colors = { Color.red, Color.blue, Color.green };
     private int nextPatrolPoint = 0;
-    private float walkSpeed = 5.0f; // can be adjusted
+    private float walkSpeed = 4.0f; // can be adjusted
     private float minimumPatrolDistance = 100.0f; // can be adjusted
     private float searchRadius = 150.0f; // can be adjusted
     // Start is called before the first frame update
@@ -26,6 +25,8 @@ public class EnemyPatrollerController : MonoBehaviour
     {
         agent = transform.GetComponent<NavMeshAgent>();
         agent.speed = walkSpeed;
+        agent.acceleration = 12;
+        agent.angularSpeed = 240;
 
         // set three patrol points, one is the starting position and the other two are randomly assigned
         // NOTE: this function call causes some lag at instantiation, can decrease minimumPatrolDistance and searchRadius if needed

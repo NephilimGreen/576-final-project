@@ -191,7 +191,7 @@ public class MazeRenderer : MonoBehaviour
         collider.size = size;
         collider.isTrigger = true;
         pickup.AddComponent<PickUp>();
-        if(thingToFace is not null)
+        if (thingToFace is not null)
         {
             pickup.GetComponent<PickUp>().thingToFace = fps_player_obj;
         }
@@ -237,44 +237,48 @@ public class MazeRenderer : MonoBehaviour
 
     private GameObject createEnemy(string tileType, Vector3 pos)
     {
-        if (tileType == MazeGenerator.CHASER || tileType == MazeGenerator.PATROLLER)
+        GameObject enemy = new GameObject();
+        int floor = Mathf.FloorToInt(pos.y / storey_height);
+        if (tileType == MazeGenerator.CHASER)
         {
-            GameObject enemy;
-            // GameObject enemy = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            // enemy.transform.position = pos;
-            int floor = Mathf.FloorToInt(pos.y / storey_height);
-            if (tileType == MazeGenerator.CHASER)
-            {
-                enemy = GameObject.Instantiate(Chaser);
-                enemy.SetActive(true);
-                enemy.transform.position = pos;    
-                enemy.name = "CHASER";
-                enemy.AddComponent<EnemyChaserController>();
-                enemy.GetComponent<EnemyChaserController>().storey_height = storey_height;
-                enemy.GetComponent<EnemyChaserController>().floor = floor;
-            }
-            else
-            {
-                enemy = GameObject.Instantiate(Patroller);
-                enemy.SetActive(true);
-                enemy.transform.position = pos;    
-                enemy.name = "PATROLLER";
-                enemy.AddComponent<EnemyPatrollerController>();
-                enemy.GetComponent<EnemyPatrollerController>().storey_height = storey_height;
-                enemy.GetComponent<EnemyPatrollerController>().floor = floor;
-            }
-            enemy.AddComponent<NavMeshAgent>();
-            enemy.GetComponent<NavMeshAgent>().Warp(pos);
-
-            return enemy;
+            enemy = GameObject.Instantiate(Chaser);
+            enemy.SetActive(true);
+            enemy.transform.position = pos;
+            enemy.name = "CHASER";
+            enemy.AddComponent<EnemyChaserController>();
+            enemy.GetComponent<EnemyChaserController>().storey_height = storey_height;
+            enemy.GetComponent<EnemyChaserController>().floor = floor;
         }
-        return null;
+        else if (tileType == MazeGenerator.PATROLLER)
+        {
+            enemy = GameObject.Instantiate(Patroller);
+            enemy.SetActive(true);
+            enemy.transform.position = pos;
+            enemy.name = "PATROLLER";
+            enemy.AddComponent<EnemyPatrollerController>();
+            enemy.GetComponent<EnemyPatrollerController>().storey_height = storey_height;
+            enemy.GetComponent<EnemyPatrollerController>().floor = floor;
+        }
+        else
+        {
+            enemy = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            enemy.SetActive(true);
+            enemy.transform.position = pos;
+            enemy.name = "HUNTER";
+            enemy.AddComponent<EnemyHunterController>();
+            enemy.GetComponent<EnemyHunterController>().storey_height = storey_height;
+            enemy.GetComponent<EnemyHunterController>().floor = floor;
+        }
+        enemy.AddComponent<NavMeshAgent>();
+        enemy.GetComponent<NavMeshAgent>().Warp(pos);
+
+        return enemy;
     }
 
     private void render(string[][,][] floors)
     {
         // Minimaps
-        for(int i = 0;  i < floors.Length; i++)
+        for (int i = 0; i < floors.Length; i++)
         {
             minimaps[i].mapDraw(i, floors[i]);
             minimaps[i].setVisible(true);
@@ -311,7 +315,7 @@ public class MazeRenderer : MonoBehaviour
 
             for (int i = 0; i < floor.GetLength(0); i++)
             {
-                for(int j = 0; j < floor.GetLength(1); j++)
+                for (int j = 0; j < floor.GetLength(1); j++)
                 {
                     float floorY = bounds.min[1] + (f * storey_height) + RENDER_EPSILON;
                     float wallY = bounds.min[1] + ((f + 1) * storey_height - (storey_height / 2));
@@ -333,14 +337,14 @@ public class MazeRenderer : MonoBehaviour
                     float upZ = upLeft.y;
                     float downZ = downRight.y;
                     string tileType = floor[i, j][MazeGenerator.directionIndex(MazeGenerator.CENTER)];
-                    if(!tileType.Equals(MazeGenerator.EMPTY) && !tileType.Contains(MazeGenerator.PIT_TRAP))
+                    if (!tileType.Equals(MazeGenerator.EMPTY) && !tileType.Contains(MazeGenerator.PIT_TRAP))
                     {
                         GameObject block = GameObject.CreatePrimitive(PrimitiveType.Cube);
                         block.name = MazeGenerator.FLOOR;
                         block.transform.localScale = new Vector3(bounds.size[0] / width + RENDER_EPSILON, floor_height, bounds.size[2] / length + RENDER_EPSILON);
                         block.transform.position = new Vector3(centerX, floorY, centerZ);
                         block.GetComponent<Renderer>().material.color = floorColors[f];
-                        if((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1))
+                        if ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1))
                         {
                             block.GetComponent<Renderer>().material.color = START_TILE_COLOR;
                             treasureChest = Instantiate(treasureChestPrefab);
@@ -364,17 +368,17 @@ public class MazeRenderer : MonoBehaviour
                             block.transform.SetParent(navMeshSurface.transform);
                         }
                     }
-                    if (tileType.Equals(MazeGenerator.CHASER) || tileType.Equals(MazeGenerator.PATROLLER))
+                    if (tileType.Equals(MazeGenerator.CHASER) || tileType.Equals(MazeGenerator.PATROLLER) || tileType.Equals(MazeGenerator.HUNTER))
                     {
                         // add an enemy to the list to be instantiated after the NavMeshSurface is baked
                         Vector3 pos = new Vector3(centerX, floorY, centerZ);
                         enemies.Add((tileType, pos));
                     }
-                    if(tileType.Contains(MazeGenerator.PIT_TRAP))
+                    if (tileType.Contains(MazeGenerator.PIT_TRAP))
                     {
                         // Leave hole in floor.
                     }
-                    if(tileType.Contains(MazeGenerator.POOF_TRAP))
+                    if (tileType.Contains(MazeGenerator.POOF_TRAP))
                     {
                         GameObject barrier = GameObject.CreatePrimitive(PrimitiveType.Capsule);
                         barrier.name = MazeGenerator.POOF_TRAP;
@@ -393,7 +397,7 @@ public class MazeRenderer : MonoBehaviour
                         // poof traps should not be considered in baking the NavMeshSurface
                         barrier.transform.SetParent(floorObj.transform);
                     }
-                    if(MazeGenerator.digits.Contains(tileType) || MazeGenerator.operators.Contains(tileType))
+                    if (MazeGenerator.digits.Contains(tileType) || MazeGenerator.operators.Contains(tileType))
                     {
                         Vector3 pos = new Vector3(centerX,
                                                   floorY + (playerHeight / 2),
@@ -402,7 +406,7 @@ public class MazeRenderer : MonoBehaviour
                         // pickups should not be considered in baking the NavMeshSurface
                         createPickup(tileType, pos, size).transform.SetParent(floorObj.transform);
                     }
-                    if(MazeGenerator.boosts.Contains(tileType))
+                    if (MazeGenerator.boosts.Contains(tileType))
                     {
                         Vector3 pos = new Vector3(centerX,
                                                   floorY + (playerHeight / 2),
@@ -521,25 +525,25 @@ public class MazeRenderer : MonoBehaviour
         playerPointer.transform.SetAsLastSibling();
         playerPointer.GetComponent<RectTransform>().anchoredPosition = new Vector2((-minimapWidth / 2.0f) * (1 + (fps_player_obj.transform.position.x / bounds.max[0])), (-minimapHeight / 2.0f) * (1 + (fps_player_obj.transform.position.z / bounds.max[2])));
         playerPointer.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, (180 - fps_player_obj.transform.rotation.eulerAngles.y) % 360.0f);
-        if(playerHealth <= 0)
+        if (playerHealth <= 0)
         {
             // DISPLAY LOSS SCREEN
         }
         speedBoostTimer -= Time.deltaTime;
-        if(speedBoostTimer <= 0.0f)
+        if (speedBoostTimer <= 0.0f)
         {
             speedBoostTimer = 0.0f;
             playerSpeedModifier = 1.0f;
         }
         RigidbodyFirstPersonController controller = fps_player_obj.GetComponent<RigidbodyFirstPersonController>();
         controller.movementSettings.RunMultiplier = playerSpeedModifier;
-        if(playerSpeedModifier != 1.0f)
+        if (playerSpeedModifier != 1.0f)
         {
             controller.movementSettings.dashing = true;
         }
         else
         {
-            controller.movementSettings.dashing= false;
+            controller.movementSettings.dashing = false;
         }
     }
 }
