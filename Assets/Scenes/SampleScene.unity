@@ -1428,7 +1428,7 @@ MonoBehaviour:
   patrollerPercentage: 1
   patrollerMinCount: 1
   healthPercentage: 3.75
-  speedPercentage: 3.75
+  speedPercentage: 7.5
   healthMinCount: 6
   speedMinCount: 6
 --- !u!114 &288121573
@@ -1448,7 +1448,7 @@ MonoBehaviour:
   wall_thickness_z: 0.02
   corner_thickness_x: 0.08
   corner_thickness_z: 0.08
-  poof_trap_radius: 0.25
+  poof_trap_radius: 0.5
   storey_height: 5
   fps_prefab: {fileID: 100006, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
   playerHealth: 0
@@ -9339,6 +9339,5 @@ SceneRoots:
   - {fileID: 563814238}
   - {fileID: 1152062568}
   - {fileID: 273133043}
-  - {fileID: 2106913125}
   - {fileID: 1301377215}
   - {fileID: 890153476}

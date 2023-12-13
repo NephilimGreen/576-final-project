@@ -29,10 +29,10 @@ public class MazeRenderer : MonoBehaviour
     private float EDGE_EPSILON = 0.02f;
     public GameObject fps_prefab;
     internal GameObject fps_player_obj;
-    public static readonly int playerStartingHealth = 3;
+    public static readonly int playerStartingHealth = 5;
     public int playerHealth;
     public static readonly float SPEED_BOOST_MODIFIER = 0.5f;
-    public static readonly float SPEED_BOOST_TIME = 2.0f;  // Seconds
+    public static readonly float SPEED_BOOST_TIME = 4.0f;  // Seconds
     public float playerSpeedModifier;
     public float speedBoostTimer;
     public static string PLAYER_NAME = "PLAYER";
@@ -531,6 +531,15 @@ public class MazeRenderer : MonoBehaviour
             speedBoostTimer = 0.0f;
             playerSpeedModifier = 1.0f;
         }
-        // USE PLAYER SPEED
+        RigidbodyFirstPersonController controller = fps_player_obj.GetComponent<RigidbodyFirstPersonController>();
+        controller.movementSettings.RunMultiplier = playerSpeedModifier;
+        if(playerSpeedModifier != 1.0f)
+        {
+            controller.movementSettings.dashing = true;
+        }
+        else
+        {
+            controller.movementSettings.dashing= false;
+        }
     }
 }
