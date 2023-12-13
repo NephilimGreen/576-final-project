@@ -9,7 +9,7 @@ public static class Equation
     private static readonly string[] digits = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
     private static readonly string[] ops = { "+", "−", "×", "÷" };
 
-    // input a string an equation and its intended solution
+    // input a string equation and its intended solution
     // return true/false
     public static bool CheckProblem(string equation, int solution)
     {

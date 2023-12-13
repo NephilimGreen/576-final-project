@@ -7,6 +7,7 @@ public class ItemSlot : MonoBehaviour, IDropHandler
 {
     public void OnDrop(PointerEventData eventData)
     {
+        // if a DraggableItem is dropped onto this (open) ItemSlot, set its parent to this ItemSlot
         if (IsEmpty())
         {
             GameObject dropped = eventData.pointerDrag;
@@ -15,19 +16,9 @@ public class ItemSlot : MonoBehaviour, IDropHandler
         }
     }
 
+    // public method for checking the ItemSlot's emptiness
     public bool IsEmpty()
     {
         return (transform.childCount == 0);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
     }
 }

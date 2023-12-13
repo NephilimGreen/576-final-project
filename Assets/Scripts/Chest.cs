@@ -19,8 +19,9 @@ public class Chest : MonoBehaviour
 
     private Button submitButton;
 
+    private GameObject solutionText;
+
     private Camera playerCamera;
-    private float maxDistance = 5f;
 
     // a random 3 digit integer in range [100,999]
     int solution;
@@ -30,16 +31,23 @@ public class Chest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        solution = Random.Range(100, 1000);
-
         playerCamera = Camera.main;
         canvasManager = canvas.GetComponent<CanvasManager>();
+
+        // create a random solution and set its text
+        solution = Random.Range(100, 1000);
+        solutionText = canvasManager.solutionText;
+        solutionText.GetComponent<TMP_Text>().text = "= " + solution.ToString();
+
+        // retrieve the array of ItemSlots for the equation panel (8 slots)
         equationPanel = canvasManager.equationPanel;
         equationSlots = equationPanel.GetComponentsInChildren<ItemSlot>();
 
+        // retrieve the array of ItemSlots for the chest panel (40 slots)
         chestPanel = canvasManager.chestPanel;
         chestSlots = chestPanel.GetComponentsInChildren<ItemSlot>();
 
+        // add listener to submit button
         submitButton = canvasManager.submitButton.GetComponent<Button>();
         submitButton.onClick.AddListener(Submit);
     }
@@ -47,21 +55,21 @@ public class Chest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // open chest menu on click
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, maxDistance))
+            // max of 5.0f away from chest
+            if (Physics.Raycast(ray, out hit, 5.0f))
             {
                 if (hit.collider.gameObject == gameObject)
                 {
                     canvas.GetComponent<CanvasManager>().OpenChestMenu();
-                    Debug.Log("opened");
                 }
             }
         }
-        //PrintContents();
     }
 
     void Submit()
@@ -76,40 +84,16 @@ public class Chest : MonoBehaviour
                 equation += text;
             }
         }
-        Debug.Log(equation);
-        Debug.Log(Equation.CalculateSolution(equation));
+        Debug.Log("Your equation solution is: " + Equation.CalculateSolution(equation));
+        Debug.Log("Intended solution is: " + solution);
         if (Equation.CheckProblem(equation, solution))
         {
+            // TODO: some win state
             Debug.Log("Correct");
         }
         else
         {
             Debug.Log("Incorrect");
         }
-    }
-
-    void PrintContents()
-    {
-        string str = "";
-        for (int i = 0; i < equationSlots.Length; i++)
-        {
-            if (equationSlots[i].IsEmpty()) str += "1";
-            else
-            {
-                 str += "0";
-            }
-        }
-        Debug.Log("Equation: " + str);
-
-        str = "";
-        for (int i = 0; i < chestSlots.Length; i++)
-        {
-            if (chestSlots[i].IsEmpty()) str += "1";
-            else
-            {
-                str += "0";
-            }
-        }
-        Debug.Log("Chest: " + str);
     }
 }

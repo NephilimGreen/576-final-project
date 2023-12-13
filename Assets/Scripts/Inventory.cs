@@ -25,6 +25,9 @@ public class Inventory : MonoBehaviour
         canvasManager = canvas.GetComponent<CanvasManager>();
         hotbarPanel = canvasManager.hotbarPanel;
         hotbarSlots = hotbarPanel.GetComponentsInChildren<ItemSlot>();
+
+        // activate on start
+        canvasManager.playerUI.SetActive(true);
     }
 
     // Update is called once per frame

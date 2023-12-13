@@ -11,8 +11,9 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public TMP_Text text;
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("begin");
+        // used to snap the DraggableItem back to its correct parent ItemSlot upon release
         parentAfterDrag = transform.parent;
+        // ensures that the DraggableItem isn't covered by other UI elements
         transform.SetParent(transform.root);
         transform.SetAsLastSibling();
         text.raycastTarget = false;
@@ -20,26 +21,13 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("drag");
         transform.position = Input.mousePosition;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("end");
+        // snap DragableItem back to parentAfterDrag, which is either its original ItemSlot or a new ItemSlot
         transform.SetParent(parentAfterDrag);
         text.raycastTarget = true;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

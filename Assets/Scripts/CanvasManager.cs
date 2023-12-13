@@ -5,17 +5,20 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class CanvasManager : MonoBehaviour
 {
+    // public properties to be accessed by the player's inventory.cs script
     public GameObject playerUI;
     public GameObject hotbarPanel;
 
+    // public properties to be accessed by the chest's chest.cs script
     public GameObject chestUI;
     public GameObject submitButton;
     public GameObject closeButton;
     public GameObject equationPanel;
     public GameObject chestPanel;
+    public GameObject solutionText;
 
     public GameObject pauseMenu;
-    public static bool isPaused = false;
+    public bool isPaused = false;
 
     // Start is called before the first frame update
     void Start()
@@ -73,6 +76,7 @@ public class CanvasManager : MonoBehaviour
         ResumeGame();
     }
 
+    // this means that opening the chest pauses/unpauses the game
     public void OpenChestMenu()
     {
         if (!isPaused)
