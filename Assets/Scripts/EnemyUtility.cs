@@ -54,6 +54,24 @@ public static class EnemyUtility
         return destination;
     }
 
+    public static Vector3 GenerateRandomDestAtY(NavMeshAgent agent, float y, float searchRadius)
+    {
+        // function which generates a random Vector3 destination point given an agent, a y coord, and a searchRadius around that agent
+        Vector3 center = agent.transform.position;
+        center.y = y;
+        Vector3 destination = new Vector3(-1000, -1000, -1000);
+        NavMeshHit hit;
+        int count = 0;
+        while (!NavMesh.SamplePosition(destination, out hit, 1.0f, NavMesh.AllAreas))
+        {
+            Vector2 xAndZ = new Vector2(center.x, center.z);
+            xAndZ += Random.insideUnitCircle * searchRadius;
+            destination = new Vector3(xAndZ.x, center.y, xAndZ.y);
+            if (++count > 1000) return agent.transform.position; // prevent infinite blocking, though I doubt it can ever happen
+        }
+        return hit.position;
+    }
+
     public static Vector3[] GeneratePatrolPoints(NavMeshAgent agent, float startingMinDistance, float startingSearchRadius)
     {
         // function which generates an array of 3 patrol points, attempting to maximize the total distance between all 3 points

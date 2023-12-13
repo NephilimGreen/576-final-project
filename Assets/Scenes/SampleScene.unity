@@ -1422,11 +1422,14 @@ MonoBehaviour:
   usePoofTraps: 1
   poofPercentage: 7.5
   useChasers: 1
-  chaserPercentage: 1
+  chaserPercentage: 0.5
   chaserMinCount: 1
   usePatrollers: 1
-  patrollerPercentage: 1
+  patrollerPercentage: 0.5
   patrollerMinCount: 1
+  useHunters: 1
+  hunterPercentage: 0.5
+  hunterMinCount: 1
   healthPercentage: 3.75
   speedPercentage: 7.5
   healthMinCount: 6
