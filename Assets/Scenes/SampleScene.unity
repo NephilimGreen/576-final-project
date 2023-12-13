@@ -1427,6 +1427,10 @@ MonoBehaviour:
   usePatrollers: 1
   patrollerPercentage: 1
   patrollerMinCount: 1
+  healthPercentage: 3.75
+  speedPercentage: 3.75
+  healthMinCount: 6
+  speedMinCount: 6
 --- !u!114 &288121573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1447,6 +1451,9 @@ MonoBehaviour:
   poof_trap_radius: 0.25
   storey_height: 5
   fps_prefab: {fileID: 100006, guid: c6453f8e1f814744d8b94e5a6d1f9942, type: 3}
+  playerHealth: 0
+  playerSpeedModifier: 0
+  speedBoostTimer: 0
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -1464,6 +1471,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: bbbfcd0b6ec5c81448a0c8641abbde8b, type: 2}
   START_TILE_COLOR: {r: 0, g: 0, b: 1, a: 1}
   POOF_TRAP_MATERIAL: {fileID: 2100000, guid: 33bf29bc4c5a9b942b5110fd309021af, type: 2}
+  defaultFont: {fileID: 11400000, guid: 9955846d6d4812e46a3aadea5e25c99f, type: 2}
+  arrowFont: {fileID: 11400000, guid: dbdcd65fcb2c6ba44a33d9d68e85686c, type: 2}
   canvas: {fileID: 1152062567}
   pathToMinimapBackground: /Resources/MinimapBackground.png
   pathToMinimapFilter: /Resources/MinimapFilter.png

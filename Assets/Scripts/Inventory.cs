@@ -68,13 +68,13 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
-    public bool drop(string pickup, Vector3 position, Vector3 size)
-    {
-        if(use(pickup))
-        {
-            MazeRenderer.createPickup(pickup, position, size);
-            return true;
-        }
-        return false;
-    }
+    //public bool drop(string pickup, Vector3 position, Vector3 size)
+    //{
+    //    if(use(pickup))
+    //    {
+    //        MazeRenderer.createPickup(pickup, position, size);
+    //        return true;
+    //    }
+    //    return false;
+    //}
 }

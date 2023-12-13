@@ -10,6 +10,7 @@ using UnityStandardAssets.Characters.FirstPerson;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.AI;
 using Unity.AI.Navigation;
+using System;
 
 public class MazeRenderer : MonoBehaviour
 {
@@ -28,9 +29,16 @@ public class MazeRenderer : MonoBehaviour
     private float EDGE_EPSILON = 0.02f;
     public GameObject fps_prefab;
     internal GameObject fps_player_obj;
+    public static readonly int playerStartingHealth = 3;
+    public int playerHealth;
+    public static readonly float SPEED_BOOST_MODIFIER = 0.5f;
+    public static readonly float SPEED_BOOST_TIME = 2.0f;  // Seconds
+    public float playerSpeedModifier;
+    public float speedBoostTimer;
     public static string PLAYER_NAME = "PLAYER";
     private float playerHeight;
     public Bounds bounds;
+    private List<GameObject> nullFacedPickups;
 
     public GameObject treasureChestPrefab;
     public GameObject treasureChest;
@@ -43,7 +51,10 @@ public class MazeRenderer : MonoBehaviour
     public Color START_TILE_COLOR = new Color(0.0f, 0.0f, 1.0f);
     public Material POOF_TRAP_MATERIAL;
     public static int PICKUP_FONT_SIZE = 15;
-    public static Color PICKUP_FONT_COLOR = new Color(0.0f, 0.0f, 0.0f);
+    public static Color PICKUP_FONT_COLOR_DEFAULT = new Color(1.0f, 1.0f, 1.0f);
+    public static Color BOOST_FONT_COLOR_DEFAULT = new Color(1.0f, 0.0f, 0.0f);
+    public TMP_FontAsset defaultFont;
+    public TMP_FontAsset arrowFont;
     public static Material PICKUP_MATERIAL;
     public Canvas canvas;
     private Minimap[] minimaps;
@@ -70,6 +81,23 @@ public class MazeRenderer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerHealth = playerStartingHealth;
+        speedBoostTimer = 0.0f;
+        playerSpeedModifier = 1.0f;
+
+        if (defaultFont != null && arrowFont != null)
+        {
+            if (defaultFont.fallbackFontAssetTable == null)
+                defaultFont.fallbackFontAssetTable = new List<TMP_FontAsset>();
+            if (!defaultFont.fallbackFontAssetTable.Contains(arrowFont))
+            {
+                defaultFont.fallbackFontAssetTable.Add(arrowFont);
+            }
+            Debug.Log(defaultFont.fallbackFontAssetTable[0]);
+        }
+
+        nullFacedPickups = new List<GameObject>();
+
         // fps_prefab.GetComponent<RigidbodyFirstPersonController>().enabled = true;
         bounds = GetComponent<Collider>().bounds;
         Debug.Log(bounds.min);
@@ -136,25 +164,58 @@ public class MazeRenderer : MonoBehaviour
         render(maze);
     }
 
-    public static GameObject createPickup(string tileType, Vector3 position, Vector3 size)
+    public GameObject createPickup(string tileType, Vector3 position, Vector3 size)
+    {
+        return createPickup(tileType, position, size, PICKUP_FONT_COLOR_DEFAULT);
+    }
+
+    public GameObject createPickup(string tileType, Vector3 position, Vector3 size, Color textColor)
+    {
+        return createPickup(tileType, position, size, null, textColor);
+    }
+
+    public GameObject createPickup(string tileType, Vector3 position, Vector3 size, GameObject thingToFace, Color textColor)
     {
         GameObject pickup = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        pickup.GetComponent<Renderer>().enabled = true;
         pickup.GetComponent<Renderer>().material = PICKUP_MATERIAL;
+        pickup.GetComponent<Renderer>().enabled = true;
         pickup.name = tileType;
         pickup.transform.position = position;
         pickup.transform.localScale = size;
         Rigidbody rb = pickup.AddComponent<Rigidbody>();
         rb.isKinematic = true;
-        BoxCollider collider = pickup.AddComponent<BoxCollider>();
+        BoxCollider collider = pickup.GetComponent<BoxCollider>();
+        Debug.Log(collider);
         collider.size = size;
+        collider.isTrigger = true;
         pickup.AddComponent<PickUp>();
+        if(thingToFace is not null)
+        {
+            pickup.GetComponent<PickUp>().thingToFace = fps_player_obj;
+        }
+        else
+        {
+            nullFacedPickups.Add(pickup);
+        }
 
         TextMeshPro textMesh = pickup.AddComponent<TextMeshPro>();
         textMesh.text = tileType;
         textMesh.fontSize = PICKUP_FONT_SIZE;
-        textMesh.color = PICKUP_FONT_COLOR;
+        textMesh.color = textColor;
         textMesh.alignment = TextAlignmentOptions.Center;
+        textMesh.lineSpacing = 0;
+        textMesh.font = defaultFont;
+
+        GameObject backGroundBox = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        backGroundBox.GetComponent<Renderer>().material = PICKUP_MATERIAL;
+        backGroundBox.GetComponent<Renderer>().enabled = true;
+        backGroundBox.name = tileType + " BackGroundBox";
+        backGroundBox.transform.position = position;
+        backGroundBox.transform.localScale = Vector3.Scale(size, new Vector3(1.5f, 1.5f, 0.1f));
+        BoxCollider collider2 = backGroundBox.GetComponent<BoxCollider>();
+        collider2.isTrigger = true;
+        pickup.GetComponent<PickUp>().backGroundBox = backGroundBox;
+        pickup.GetComponent<PickUp>().renderer = this;
 
         return pickup;
     }
@@ -311,9 +372,9 @@ public class MazeRenderer : MonoBehaviour
                         barrier.transform.localScale = new Vector3(poof_trap_radius, storey_height * 0.2f, poof_trap_radius);
                         float placementRange_x = poof_trap_radius - wall_thickness_x;
                         float placementRange_z = poof_trap_radius - wall_thickness_z;
-                        barrier.transform.position = new Vector3(centerX + Random.Range(-placementRange_x, placementRange_x),
+                        barrier.transform.position = new Vector3(centerX + UnityEngine.Random.Range(-placementRange_x, placementRange_x),
                                                                  wallY - (storey_height * 0.1f),
-                                                                 centerZ + Random.Range(-placementRange_z, placementRange_z));
+                                                                 centerZ + UnityEngine.Random.Range(-placementRange_z, placementRange_z));
                         barrier.GetComponent<Renderer>().material = POOF_TRAP_MATERIAL;
                         barrier.AddComponent<PoofTrap>();
                         barrier.GetComponent<PoofTrap>().floor = f;
@@ -331,6 +392,14 @@ public class MazeRenderer : MonoBehaviour
                         Vector3 size = new Vector3((playerHeight / 4) / 2, (playerHeight / 4) / 2, storey_height / 50.0f);
                         // pickups should not be considered in baking the NavMeshSurface
                         createPickup(tileType, pos, size).transform.SetParent(floorObj.transform);
+                    }
+                    if(MazeGenerator.boosts.Contains(tileType))
+                    {
+                        Vector3 pos = new Vector3(centerX,
+                                                  floorY + (playerHeight / 2),
+                                                  centerZ);
+                        Vector3 size = new Vector3((playerHeight / 4) / 2, (playerHeight / 4) / 2, storey_height / 50.0f);
+                        createPickup(tileType, pos, size, MazeGenerator.boostColors[Array.IndexOf(MazeGenerator.boosts, tileType)]).transform.SetParent(floorObj.transform);
                     }
                     if (floor[i, j][MazeGenerator.directionIndex(MazeGenerator.UP)].Equals(MazeGenerator.WALL))
                     {
@@ -430,6 +499,10 @@ public class MazeRenderer : MonoBehaviour
         fps_player_obj.AddComponent<Inventory>();
         fps_player_obj.GetComponent<Inventory>().canvas = canvas;
         fps_player_obj.GetComponent<Inventory>().itemPrefab = inventoryItemPrefab;
+        foreach (GameObject pickup in nullFacedPickups)
+        {
+            pickup.GetComponent<PickUp>().thingToFace = fps_player_obj;
+        }
     }
 
     // Update is called once per frame
@@ -439,5 +512,16 @@ public class MazeRenderer : MonoBehaviour
         playerPointer.transform.SetAsLastSibling();
         playerPointer.GetComponent<RectTransform>().anchoredPosition = new Vector2((-minimapWidth / 2.0f) * (1 + (fps_player_obj.transform.position.x / bounds.max[0])), (-minimapHeight / 2.0f) * (1 + (fps_player_obj.transform.position.z / bounds.max[2])));
         playerPointer.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, (180 - fps_player_obj.transform.rotation.eulerAngles.y) % 360.0f);
+        if(playerHealth <= 0)
+        {
+            // DISPLAY LOSS SCREEN
+        }
+        speedBoostTimer -= Time.deltaTime;
+        if(speedBoostTimer <= 0.0f)
+        {
+            speedBoostTimer = 0.0f;
+            playerSpeedModifier = 1.0f;
+        }
+        // USE PLAYER SPEED
     }
 }

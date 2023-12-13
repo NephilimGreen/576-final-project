@@ -46,6 +46,10 @@ public class MazeGenerator : MonoBehaviour
     public bool usePatrollers;
     public float patrollerPercentage;
     public int patrollerMinCount;
+    public float healthPercentage;
+    public float speedPercentage;
+    public int healthMinCount;
+    public int speedMinCount;
 
     // Initialize here or in Start()
     public static readonly string EMPTY = " ";
@@ -57,6 +61,8 @@ public class MazeGenerator : MonoBehaviour
     public static readonly string DIVIDE = "÷";
     public static readonly string PIT_TRAP = "↓";
     public static readonly string POOF_TRAP = "⌖";
+    public static readonly string HEALTH_BOOST = "♥"; //♡
+    public static readonly string SPEED_BOST = "⇪"; //↑
     public static readonly string CHASER = "E";
     public static readonly string PATROLLER = "e";
     public static readonly string[] digits = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };  // For convenience
@@ -73,7 +79,12 @@ public class MazeGenerator : MonoBehaviour
     private float[] enemyPercentages;
     private int[] enemyCounts = { 0, 0 };
     private int[] enemyMinimums;
-    private string[][] specialFloorTypes = { digits, operators, traps, enemies };
+    public static readonly string[] boosts = { HEALTH_BOOST, SPEED_BOST };
+    public static readonly Color[] boostColors = { Color.red, Color.green };
+    private float[] boostPercentages;
+    private int[] boostCounts = { 0, 0, 0 };
+    private int[] boostMinumums;
+    private string[][] specialFloorTypes = { digits, operators, traps, enemies, boosts };
     private float[][] specialFloorPercentages;
     private int[][] specialFloorCounts;
     private int[][] specialFloorMinimums;
@@ -387,9 +398,11 @@ public class MazeGenerator : MonoBehaviour
         trapMinimums = new[] { pitTrapsMinCount, poofTrapsMinCount };
         enemyPercentages = new[] { chaserPercentage, patrollerPercentage };
         enemyMinimums = new[] { chaserMinCount, patrollerMinCount };
-        specialFloorPercentages = new[] { digitPercentages, operatorPercentages, trapPercentages, enemyPercentages };
-        specialFloorCounts = new[] { digitCounts, operatorCounts, trapCounts, enemyCounts };
-        specialFloorMinimums = new[] { digitMinimums, operatorMinimums, trapMinimums, enemyMinimums };
+        boostPercentages = new[] { healthPercentage, speedPercentage };
+        boostMinumums = new[] { healthMinCount, speedMinCount };
+        specialFloorPercentages = new[] { digitPercentages, operatorPercentages, trapPercentages, enemyPercentages, boostPercentages };
+        specialFloorCounts = new[] { digitCounts, operatorCounts, trapCounts, enemyCounts, boostCounts };
+        specialFloorMinimums = new[] { digitMinimums, operatorMinimums, trapMinimums, enemyMinimums, boostMinumums };
         start = ((width - 1) / 2, 0);
 
         List<string[,][]> gridsList = new List<string[,][]>();
