@@ -1,3 +1,9 @@
 Assets/Characters/*
 Assets/Dreyar/*
 Assets/erica/*
+.vs/
+Library/
+Temp/
+UserSettings/
+Logs/
+obj/
