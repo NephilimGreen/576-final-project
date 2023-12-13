@@ -36,13 +36,13 @@ public class EnemyPatrollerController : MonoBehaviour
 
     IEnumerator MoveToPatrolPoints()
     {
-        Renderer renderer = transform.GetComponent<Renderer>();
+        // Renderer renderer = transform.GetComponent<Renderer>();
         while (true)
         {
             // cycle through patrol points
             nextPatrolPoint = (nextPatrolPoint + 1) % patrolPoints.Length;
             Vector3 destination = patrolPoints[nextPatrolPoint];
-            renderer.material.color = colors[nextPatrolPoint];
+            // renderer.material.color = colors[nextPatrolPoint];
             agent.SetDestination(destination);
             // Debug.Log("patroller set new dest");
             yield return new WaitUntil(() => agent.hasPath && agent.remainingDistance <= 0.5f);
@@ -54,7 +54,10 @@ public class EnemyPatrollerController : MonoBehaviour
         if (collision.gameObject.name.Equals(MazeRenderer.PLAYER_NAME))
         {
             // temporarily just teleport back to start on collision
-            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            transform.GetComponent<Animator>().SetBool("run", false);
+            transform.GetComponent<Animator>().SetBool("walk", false);
+            transform.GetComponent<Animator>().SetBool("punch", true);
+            // collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
         }
     }
 }

@@ -72,6 +72,8 @@ public class MazeRenderer : MonoBehaviour
 
     private MazeGenerator generator;
     private string[][,][] maze;
+    public GameObject Patroller;
+    public GameObject Chaser;
 
     private void Awake()
     {
@@ -237,11 +239,15 @@ public class MazeRenderer : MonoBehaviour
     {
         if (tileType == MazeGenerator.CHASER || tileType == MazeGenerator.PATROLLER)
         {
-            GameObject enemy = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            enemy.transform.position = pos;
+            GameObject enemy;
+            // GameObject enemy = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            // enemy.transform.position = pos;
             int floor = Mathf.FloorToInt(pos.y / storey_height);
             if (tileType == MazeGenerator.CHASER)
             {
+                enemy = GameObject.Instantiate(Chaser);
+                enemy.SetActive(true);
+                enemy.transform.position = pos;    
                 enemy.name = "CHASER";
                 enemy.AddComponent<EnemyChaserController>();
                 enemy.GetComponent<EnemyChaserController>().storey_height = storey_height;
@@ -249,6 +255,9 @@ public class MazeRenderer : MonoBehaviour
             }
             else
             {
+                enemy = GameObject.Instantiate(Patroller);
+                enemy.SetActive(true);
+                enemy.transform.position = pos;    
                 enemy.name = "PATROLLER";
                 enemy.AddComponent<EnemyPatrollerController>();
                 enemy.GetComponent<EnemyPatrollerController>().storey_height = storey_height;

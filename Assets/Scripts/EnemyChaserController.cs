@@ -54,7 +54,10 @@ public class EnemyChaserController : MonoBehaviour
         {
             isChasing = true;
             agent.speed = runSpeed;
-            transform.GetComponent<Renderer>().material.color = Color.white;
+            // transform.GetComponent<Renderer>().material.color = Color.white;
+            transform.GetComponent<Animator>().SetBool("run", true);
+            transform.GetComponent<Animator>().SetBool("punch", false);
+            transform.GetComponent<Animator>().SetBool("walk", false);
             // Debug.Log("chasing " + floor);
             agent.SetDestination(player.transform.position);
         }
@@ -62,8 +65,11 @@ public class EnemyChaserController : MonoBehaviour
         else
         {
             isChasing = false;
+            transform.GetComponent<Animator>().SetBool("punch", false);
+            transform.GetComponent<Animator>().SetBool("run", false);
+            transform.GetComponent<Animator>().SetBool("walk", true);
             agent.speed = walkSpeed;
-            transform.GetComponent<Renderer>().material.color = Color.black;
+            // transform.GetComponent<Renderer>().material.color = Color.black;
         }
     }
 
@@ -87,7 +93,10 @@ public class EnemyChaserController : MonoBehaviour
         if (collision.gameObject.name.Equals(MazeRenderer.PLAYER_NAME))
         {
             // temporarily just teleport back to start on collision
-            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            transform.GetComponent<Animator>().SetBool("run", false);
+            transform.GetComponent<Animator>().SetBool("walk", false);
+            transform.GetComponent<Animator>().SetBool("punch", true);
+            // collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
         }
     }
 }
