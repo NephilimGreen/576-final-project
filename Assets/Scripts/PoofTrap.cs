@@ -8,6 +8,8 @@ public class PoofTrap : MonoBehaviour
     public float storey_height;
     public Bounds bounds;
     public string[][,][] maze;
+    public AudioClip warpClip;
+    public AudioSource warpSource;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,7 @@ public class PoofTrap : MonoBehaviour
             collision.gameObject.transform.position = new Vector3(bounds.min[0] + (corner.Item1 * bounds.size[0] / width) + 0.5f,
                                                                   bounds.min[1] + (teleportFloor * storey_height + (storey_height / 2)),
                                                                   bounds.min[2] + (corner.Item2 * bounds.size[2] / length) + 0.5f);
+            warpSource.PlayOneShot(warpClip);
         }
     }
 }

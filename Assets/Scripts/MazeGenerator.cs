@@ -18,7 +18,6 @@ public class MazeGenerator : MonoBehaviour
     string[][,][] maze;
 
     // Initialize in the editor
-    public menuParams menuParameters;
     public int width;
     public int height;
     public int centerWidth;
@@ -381,9 +380,6 @@ public class MazeGenerator : MonoBehaviour
 
     public string[][,][] Generate()
     {
-        numFloors = menuParameters.numFloors;
-        usePitTraps = menuParameters.useFloorTraps;
-        usePoofTraps = menuParameters.useProofTraps;
         if (optionalSeed > 0)
         {
             UnityEngine.Random.InitState(optionalSeed);

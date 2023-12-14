@@ -11,6 +11,8 @@ public class PickUp : MonoBehaviour
     public GameObject thingToFace;
     public GameObject backGroundBox;
     public MazeRenderer renderer;
+    public AudioClip pingClip;
+    public AudioSource pingSource;
 
     // Use this for initialization 
     void Start()
@@ -57,6 +59,7 @@ public class PickUp : MonoBehaviour
 
                 if(processedNow)
                 {
+                    pingSource.PlayOneShot(pingClip);
                     Destroy(text);
                     Destroy(gameObject);
                     Destroy(backGroundBox);

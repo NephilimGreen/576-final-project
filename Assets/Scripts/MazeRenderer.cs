@@ -83,6 +83,10 @@ public class MazeRenderer : MonoBehaviour
     public float chaserAudioDistance;
     public float patrollerAudioDistance;
     public float hunterAudioDistance;
+    public AudioClip itemPingClip;
+    public AudioSource itemPingSource;
+    public AudioClip poofWarpClip;
+    public AudioSource poofWarpSource;
 
     public GameObject inventoryItemPrefab;
 
@@ -235,6 +239,8 @@ public class MazeRenderer : MonoBehaviour
         collider2.isTrigger = true;
         pickup.GetComponent<PickUp>().backGroundBox = backGroundBox;
         pickup.GetComponent<PickUp>().renderer = this;
+        pickup.GetComponent<PickUp>().pingClip = itemPingClip;
+        pickup.GetComponent<PickUp>().pingSource = itemPingSource;
 
         return pickup;
     }
@@ -254,8 +260,6 @@ public class MazeRenderer : MonoBehaviour
 
     private GameObject createEnemy(string tileType, Vector3 pos)
     {
-        int playerScore  =  PlayerPrefs.GetInt("score");
-        Debug.Log(playerScore);
         GameObject enemy = new GameObject();
         int floor = Mathf.FloorToInt(pos.y / storey_height);
         if (tileType == MazeGenerator.CHASER)
@@ -428,6 +432,8 @@ public class MazeRenderer : MonoBehaviour
                         barrier.GetComponent<PoofTrap>().storey_height = storey_height;
                         barrier.GetComponent<PoofTrap>().bounds = bounds;
                         barrier.GetComponent<PoofTrap>().maze = maze;
+                        barrier.GetComponent<PoofTrap>().warpClip = poofWarpClip;
+                        barrier.GetComponent<PoofTrap>().warpSource = poofWarpSource;
                         // poof traps should not be considered in baking the NavMeshSurface
                         barrier.transform.SetParent(floorObj.transform);
                     }
