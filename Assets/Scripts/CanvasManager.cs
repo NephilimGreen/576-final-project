@@ -20,13 +20,14 @@ public class CanvasManager : MonoBehaviour
     public GameObject victoryMenu;
     public GameObject lossMenu;
     public GameObject pauseMenu;
+    public GameObject centerDot;
     public bool isPaused = false;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        ResumeGame();
     }
 
     // Update is called once per frame
@@ -49,6 +50,7 @@ public class CanvasManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         victoryMenu.SetActive(true);
+        centerDot.SetActive(false);
         victoryMenu.transform.SetAsLastSibling();
         isPaused = true;
     }
@@ -56,12 +58,14 @@ public class CanvasManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         lossMenu.SetActive(true);
+        centerDot.SetActive(false);
         lossMenu.transform.SetAsLastSibling();
         isPaused = true;
     }
     void PauseGame()
     {
         pauseMenu.SetActive(true);
+        centerDot.SetActive(false);
         isPaused = true;
         Time.timeScale = 0.0f;
         // unlock the cursor
@@ -71,6 +75,7 @@ public class CanvasManager : MonoBehaviour
 
     void ResumeGame()
     {
+        centerDot.SetActive(true);
         pauseMenu.SetActive(false);
         chestUI.SetActive(false);
         isPaused = false;
@@ -90,6 +95,7 @@ public class CanvasManager : MonoBehaviour
     public void MainMenuButton()
     {
         // TODO: change this to return to the main menu
+        isPaused = false;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
@@ -98,6 +104,7 @@ public class CanvasManager : MonoBehaviour
     // this means that opening the chest pauses/unpauses the game
     public void OpenChestMenu()
     {
+        centerDot.SetActive(false);
         if (!isPaused)
         {
             isPaused = true;
