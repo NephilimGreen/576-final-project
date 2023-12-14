@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// used tips from this tutorial: https://www.youtube.com/watch?v=kWRyZ3hb1Vc
 public class ItemSlot : MonoBehaviour, IDropHandler
 {
     public void OnDrop(PointerEventData eventData)

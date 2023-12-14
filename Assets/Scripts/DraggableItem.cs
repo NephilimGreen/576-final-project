@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 
+// used tips from this tutorial: https://www.youtube.com/watch?v=kWRyZ3hb1Vc
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Transform parentAfterDrag;
@@ -26,7 +27,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // snap DragableItem back to parentAfterDrag, which is either its original ItemSlot or a new ItemSlot
+        // snap DraggableItem back to parentAfterDrag, which is either its original ItemSlot or a new ItemSlot
         transform.SetParent(parentAfterDrag);
         text.raycastTarget = true;
     }

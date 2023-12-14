@@ -23,6 +23,7 @@ public class EnemyChaserController : MonoBehaviour
 
     GameObject player;
     NavMeshAgent agent;
+    public MazeRenderer renderer;
 
     // properties of CHASER enemy
     private bool isChasing = false;
