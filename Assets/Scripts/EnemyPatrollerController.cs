@@ -43,6 +43,9 @@ public class EnemyPatrollerController : MonoBehaviour
             // cycle through patrol points
             nextPatrolPoint = (nextPatrolPoint + 1) % patrolPoints.Length;
             Vector3 destination = patrolPoints[nextPatrolPoint];
+            transform.GetComponent<Animator>().SetBool("run", false);
+            transform.GetComponent<Animator>().SetBool("walk", true);
+            transform.GetComponent<Animator>().SetBool("punch", false);
             // renderer.material.color = colors[nextPatrolPoint];
             agent.SetDestination(destination);
             // Debug.Log("patroller set new dest");

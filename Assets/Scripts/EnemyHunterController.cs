@@ -64,15 +64,21 @@ public class EnemyHunterController : MonoBehaviour
         // else if can reach player, chase them
         else if (EnemyUtility.DoesPathToDestExist(agent, player.transform.position))
         {
+            transform.GetComponent<Animator>().SetBool("run", true);
+            transform.GetComponent<Animator>().SetBool("walk", false);
+            transform.GetComponent<Animator>().SetBool("punch", false);
             isHunting = true;
-            transform.GetComponent<Renderer>().material.color = Color.white;
+            // transform.GetComponent<Renderer>().material.color = Color.white;
             agent.SetDestination(player.transform.position);
         }
         // otherwise, continue the random movement coroutine
         else
         {
+            transform.GetComponent<Animator>().SetBool("run", false);
+            transform.GetComponent<Animator>().SetBool("walk", true);
+            transform.GetComponent<Animator>().SetBool("punch", false);
             isHunting = false;
-            transform.GetComponent<Renderer>().material.color = Color.black;
+            // transform.GetComponent<Renderer>().material.color = Color.black;
         }
     }
 
@@ -94,8 +100,12 @@ public class EnemyHunterController : MonoBehaviour
     {
         if (collision.gameObject.name.Equals(MazeRenderer.PLAYER_NAME))
         {
+            transform.GetComponent<Animator>().SetBool("run", false);
+            transform.GetComponent<Animator>().SetBool("walk", false);
+            transform.GetComponent<Animator>().SetBool("punch", true);
+            // Debug.Log("Hit");
             // temporarily just teleport back to start on collision
-            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            // collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
         }
     }
 }

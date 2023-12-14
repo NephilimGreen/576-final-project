@@ -74,6 +74,7 @@ public class MazeRenderer : MonoBehaviour
     private string[][,][] maze;
     public GameObject Patroller;
     public GameObject Chaser;
+    public GameObject Hunter;
 
     private void Awake()
     {
@@ -261,7 +262,7 @@ public class MazeRenderer : MonoBehaviour
         }
         else
         {
-            enemy = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            enemy = GameObject.Instantiate(Hunter);
             enemy.SetActive(true);
             enemy.transform.position = pos;
             enemy.name = "HUNTER";
