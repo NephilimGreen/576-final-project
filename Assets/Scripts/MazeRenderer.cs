@@ -96,6 +96,8 @@ public class MazeRenderer : MonoBehaviour
     public GameObject Chaser;
     public GameObject Hunter;
 
+    public RectTransform healthBar;
+    public float healthBarWidth, healthBarHeight;
     private void Awake()
     {
         PICKUP_MATERIAL = Resources.Load<Material>("PickupMaterial");
@@ -276,6 +278,7 @@ public class MazeRenderer : MonoBehaviour
             enemy.GetComponent<EnemyChaserController>().attackClip = chaserAttackClip;
             enemy.GetComponent<EnemyChaserController>().attackSource = chaserAttackSource;
             enemy.GetComponent<EnemyChaserController>().audioDistance = chaserAudioDistance;
+            enemy.GetComponent<EnemyChaserController>().renderer = this;
         }
         else if (tileType == MazeGenerator.PATROLLER)
         {
@@ -291,6 +294,7 @@ public class MazeRenderer : MonoBehaviour
             enemy.GetComponent<EnemyPatrollerController>().attackClip = patrollerAttackClip;
             enemy.GetComponent<EnemyPatrollerController>().attackSource = patrollerAttackSource;
             enemy.GetComponent<EnemyPatrollerController>().audioDistance = patrollerAudioDistance;
+            enemy.GetComponent<EnemyPatrollerController>().renderer = this;
         }
         else
         {
@@ -306,6 +310,7 @@ public class MazeRenderer : MonoBehaviour
             enemy.GetComponent<EnemyHunterController>().attackClip = hunterAttackClip;
             enemy.GetComponent<EnemyHunterController>().attackSource = hunterAttackSource;
             enemy.GetComponent<EnemyHunterController>().audioDistance = hunterAudioDistance;
+            enemy.GetComponent<EnemyHunterController>().renderer = this;
         }
         enemy.AddComponent<NavMeshAgent>();
         enemy.GetComponent<NavMeshAgent>().Warp(pos);
@@ -585,5 +590,16 @@ public class MazeRenderer : MonoBehaviour
         {
             controller.movementSettings.dashing = false;
         }
+
+        renderHealthBar();
     }
+
+    void renderHealthBar()
+    {
+        playerHealth = Mathf.Clamp(playerHealth, 0, playerStartingHealth);
+        float newWidth = (float)playerHealth / (float)playerStartingHealth * healthBarWidth;
+        healthBar.sizeDelta = new Vector2(newWidth, healthBarHeight);
+    }
+
+
 }

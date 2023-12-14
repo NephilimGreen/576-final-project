@@ -23,6 +23,7 @@ public class EnemyHunterController : MonoBehaviour
 
     GameObject player;
     NavMeshAgent agent;
+    public MazeRenderer renderer;
 
     // properties of HUNTER enemy
     private bool isHunting = false;
@@ -133,6 +134,9 @@ public class EnemyHunterController : MonoBehaviour
             // Debug.Log("Hit");
             attackSource.PlayOneShot(attackClip);
             collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+
+            // decrement health
+            renderer.playerHealth -= 1;
         }
     }
 }
