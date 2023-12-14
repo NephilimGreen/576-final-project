@@ -89,7 +89,9 @@ public class Chest : MonoBehaviour
         if (Equation.CheckProblem(equation, solution))
         {
             // TODO: some win state
+            canvasManager.showVictoryScreen();
             Debug.Log("Correct");
+
         }
         else
         {

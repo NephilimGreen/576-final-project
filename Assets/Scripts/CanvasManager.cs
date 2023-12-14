@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityStandardAssets.Characters.FirstPerson;
 
 public class CanvasManager : MonoBehaviour
@@ -16,9 +17,11 @@ public class CanvasManager : MonoBehaviour
     public GameObject equationPanel;
     public GameObject chestPanel;
     public GameObject solutionText;
-
+    public GameObject victoryMenu;
+    public GameObject lossMenu;
     public GameObject pauseMenu;
     public bool isPaused = false;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +45,20 @@ public class CanvasManager : MonoBehaviour
         }
     }
 
+    public void showVictoryScreen(){
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        victoryMenu.SetActive(true);
+        victoryMenu.transform.SetAsLastSibling();
+        isPaused = true;
+    }
+    void showLossScreen(){
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        lossMenu.SetActive(true);
+        lossMenu.transform.SetAsLastSibling();
+        isPaused = true;
+    }
     void PauseGame()
     {
         pauseMenu.SetActive(true);
@@ -73,7 +90,9 @@ public class CanvasManager : MonoBehaviour
     public void MainMenuButton()
     {
         // TODO: change this to return to the main menu
-        ResumeGame();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     // this means that opening the chest pauses/unpauses the game
