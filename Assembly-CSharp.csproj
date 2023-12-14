@@ -88,6 +88,7 @@
      <Compile Include="Assets\Scripts\Standard Assets\CrossPlatformInput\Scripts\MobileControlRig.cs" />
      <Compile Include="Assets\Scripts\Standard Assets\Characters\FirstPersonCharacter\Scripts\MouseLook.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples _ Extras\Scripts\ChatController.cs" />
+     <Compile Include="Assets\menuParamsScript.cs" />
      <Compile Include="Assets\Scripts\Standard Assets\Utility\WaypointProgressTracker.cs" />
      <Compile Include="Assets\Scripts\Standard Assets\Utility\TimedObjectDestructor.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples _ Extras\Scripts\SimpleScript.cs" />
@@ -111,6 +112,7 @@
      <Compile Include="Assets\TextMesh Pro\Examples _ Extras\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\EnemyHunterController.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples _ Extras\Scripts\TMP_TextSelector_B.cs" />
+     <Compile Include="Assets\Scripts\menuScript.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples _ Extras\Scripts\VertexJitter.cs" />
      <Compile Include="Assets\Scripts\Standard Assets\Utility\CurveControlledBob.cs" />
      <Compile Include="Assets\TextMesh Pro\Examples _ Extras\Scripts\TMP_FrameRateCounter.cs" />
