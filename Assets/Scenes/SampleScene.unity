@@ -1519,6 +1519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92a04f48d6dffc6439d53c79a1203f72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  menuParameters: {fileID: 11400000, guid: 1769cafd320f01c47b8e534c175860f0, type: 2}
   width: 21
   height: 21
   centerWidth: 5

@@ -254,6 +254,8 @@ public class MazeRenderer : MonoBehaviour
 
     private GameObject createEnemy(string tileType, Vector3 pos)
     {
+        int playerScore  =  PlayerPrefs.GetInt("score");
+        Debug.Log(playerScore);
         GameObject enemy = new GameObject();
         int floor = Mathf.FloorToInt(pos.y / storey_height);
         if (tileType == MazeGenerator.CHASER)
