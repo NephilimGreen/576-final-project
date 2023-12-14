@@ -11,6 +11,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine.AI;
 using Unity.AI.Navigation;
 using System;
+using Unity.VisualScripting;
 
 public class MazeRenderer : MonoBehaviour
 {
@@ -75,6 +76,9 @@ public class MazeRenderer : MonoBehaviour
     public GameObject Patroller;
     public GameObject Chaser;
     public GameObject Hunter;
+
+    public RectTransform healthBar;
+    public float healthBarWidth, healthBarHeight;
 
     private void Awake()
     {
@@ -251,6 +255,7 @@ public class MazeRenderer : MonoBehaviour
             enemy.AddComponent<EnemyChaserController>();
             enemy.GetComponent<EnemyChaserController>().storey_height = storey_height;
             enemy.GetComponent<EnemyChaserController>().floor = floor;
+            enemy.GetComponent<EnemyChaserController>().renderer = this;
         }
         else if (tileType == MazeGenerator.PATROLLER)
         {
@@ -261,6 +266,7 @@ public class MazeRenderer : MonoBehaviour
             enemy.AddComponent<EnemyPatrollerController>();
             enemy.GetComponent<EnemyPatrollerController>().storey_height = storey_height;
             enemy.GetComponent<EnemyPatrollerController>().floor = floor;
+            enemy.GetComponent<EnemyPatrollerController>().renderer = this;
         }
         else
         {
@@ -271,6 +277,7 @@ public class MazeRenderer : MonoBehaviour
             enemy.AddComponent<EnemyHunterController>();
             enemy.GetComponent<EnemyHunterController>().storey_height = storey_height;
             enemy.GetComponent<EnemyHunterController>().floor = floor;
+            enemy.GetComponent<EnemyHunterController>().renderer = this;
         }
         enemy.AddComponent<NavMeshAgent>();
         enemy.GetComponent<NavMeshAgent>().Warp(pos);
@@ -548,5 +555,15 @@ public class MazeRenderer : MonoBehaviour
         {
             controller.movementSettings.dashing = false;
         }
+
+        setHealthBar();
+    }
+
+    void setHealthBar()
+    {
+        playerHealth = Mathf.Clamp(playerHealth, 0, playerStartingHealth);
+        // note: at least one of the division operands must be cast to float, otherwise the result will always be rounded down to an int
+        float newWidth = ((float) playerHealth / (float) playerStartingHealth) * healthBarWidth;
+        healthBar.sizeDelta = new Vector2(newWidth, healthBarHeight);
     }
 }

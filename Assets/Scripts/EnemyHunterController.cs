@@ -15,6 +15,7 @@ public class EnemyHunterController : MonoBehaviour
 
     GameObject player;
     NavMeshAgent agent;
+    public MazeRenderer renderer;
 
     // properties of HUNTER enemy
     private bool isHunting = false;
@@ -105,7 +106,10 @@ public class EnemyHunterController : MonoBehaviour
             transform.GetComponent<Animator>().SetBool("punch", true);
             // Debug.Log("Hit");
             // temporarily just teleport back to start on collision
-            // collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+
+            // decrement player health
+            renderer.playerHealth -= 1;
         }
     }
 }

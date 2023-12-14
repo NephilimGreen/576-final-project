@@ -13,6 +13,7 @@ public class EnemyPatrollerController : MonoBehaviour
     public float storey_height;
 
     NavMeshAgent agent;
+    public MazeRenderer renderer;
 
     // properties of PATROLLER enemy
     private Vector3[] patrolPoints = new Vector3[3];
@@ -61,7 +62,10 @@ public class EnemyPatrollerController : MonoBehaviour
             transform.GetComponent<Animator>().SetBool("run", false);
             transform.GetComponent<Animator>().SetBool("walk", false);
             transform.GetComponent<Animator>().SetBool("punch", true);
-            // collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+
+            // decrement player health
+            renderer.playerHealth -= 1;
         }
     }
 }
