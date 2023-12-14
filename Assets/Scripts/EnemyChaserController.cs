@@ -12,6 +12,14 @@ public class EnemyChaserController : MonoBehaviour
     // used for determining if player is on current floor
     public int floor;
     public float storey_height;
+    public AudioClip stepClip;
+    public AudioSource stepSource;
+    public float defaultStepSoundCooldown = (2.0f / 3.0f);
+    private float stepSoundCooldown;
+    private float currentStepSoundCooldown = 0.0f;
+    public AudioClip attackClip;
+    public AudioSource attackSource;
+    public float audioDistance;
 
     GameObject player;
     NavMeshAgent agent;
@@ -27,6 +35,7 @@ public class EnemyChaserController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        stepSoundCooldown = defaultStepSoundCooldown;
         player = GameObject.Find("PLAYER");
         agent = transform.GetComponent<NavMeshAgent>();
         agent.speed = walkSpeed;
@@ -38,12 +47,30 @@ public class EnemyChaserController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isChasing)
+        {
+            stepSoundCooldown = defaultStepSoundCooldown * 0.5f;
+        }
+        else
+        {
+            stepSoundCooldown = defaultStepSoundCooldown;
+        }
         // to significantly improve performance, only update roughly every 0.5s instead of every frame
         timer += Time.deltaTime;
         if (timer > update)
         {
             SlowUpdate();
             timer = 0;
+        }
+        currentStepSoundCooldown -= Time.deltaTime;
+        if (currentStepSoundCooldown <= 0.0f)
+        {
+            if (EnemyUtility.IsDestOnFloor(player.transform.position, floor, storey_height) &&
+                (Vector3.Distance(player.transform.position, transform.position) < audioDistance))
+            {
+                stepSource.PlayOneShot(stepClip);
+            }
+            currentStepSoundCooldown = stepSoundCooldown * (1 + Random.Range(-0.15f, 0.15f));
         }
     }
 
@@ -99,7 +126,8 @@ public class EnemyChaserController : MonoBehaviour
             transform.GetComponent<Animator>().SetBool("run", false);
             transform.GetComponent<Animator>().SetBool("walk", false);
             transform.GetComponent<Animator>().SetBool("punch", true);
-            // collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            attackSource.PlayOneShot(attackClip);
+            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
         }
     }
 }

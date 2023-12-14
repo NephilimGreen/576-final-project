@@ -68,6 +68,22 @@ public class MazeRenderer : MonoBehaviour
     public int minimapHeight;
     private Vector2 minimapOffset;
 
+    public AudioClip chaserStepClip;
+    public AudioSource chaserStepSource;
+    public AudioClip patrollerStepClip;
+    public AudioSource patrollerStepSource;
+    public AudioClip hunterStepClip;
+    public AudioSource hunterStepSource;
+    public AudioClip chaserAttackClip;
+    public AudioSource chaserAttackSource;
+    public AudioClip patrollerAttackClip;
+    public AudioSource patrollerAttackSource;
+    public AudioClip hunterAttackClip;
+    public AudioSource hunterAttackSource;
+    public float chaserAudioDistance;
+    public float patrollerAudioDistance;
+    public float hunterAudioDistance;
+
     public GameObject inventoryItemPrefab;
 
     private MazeGenerator generator;
@@ -249,6 +265,11 @@ public class MazeRenderer : MonoBehaviour
             enemy.AddComponent<EnemyChaserController>();
             enemy.GetComponent<EnemyChaserController>().storey_height = storey_height;
             enemy.GetComponent<EnemyChaserController>().floor = floor;
+            enemy.GetComponent<EnemyChaserController>().stepClip = chaserStepClip;
+            enemy.GetComponent<EnemyChaserController>().stepSource = chaserStepSource;
+            enemy.GetComponent<EnemyChaserController>().attackClip = chaserAttackClip;
+            enemy.GetComponent<EnemyChaserController>().attackSource = chaserAttackSource;
+            enemy.GetComponent<EnemyChaserController>().audioDistance = chaserAudioDistance;
         }
         else if (tileType == MazeGenerator.PATROLLER)
         {
@@ -259,6 +280,11 @@ public class MazeRenderer : MonoBehaviour
             enemy.AddComponent<EnemyPatrollerController>();
             enemy.GetComponent<EnemyPatrollerController>().storey_height = storey_height;
             enemy.GetComponent<EnemyPatrollerController>().floor = floor;
+            enemy.GetComponent<EnemyPatrollerController>().stepClip = patrollerStepClip;
+            enemy.GetComponent<EnemyPatrollerController>().stepSource = patrollerStepSource;
+            enemy.GetComponent<EnemyPatrollerController>().attackClip = patrollerAttackClip;
+            enemy.GetComponent<EnemyPatrollerController>().attackSource = patrollerAttackSource;
+            enemy.GetComponent<EnemyPatrollerController>().audioDistance = patrollerAudioDistance;
         }
         else
         {
@@ -269,6 +295,11 @@ public class MazeRenderer : MonoBehaviour
             enemy.AddComponent<EnemyHunterController>();
             enemy.GetComponent<EnemyHunterController>().storey_height = storey_height;
             enemy.GetComponent<EnemyHunterController>().floor = floor;
+            enemy.GetComponent<EnemyHunterController>().stepClip = hunterStepClip;
+            enemy.GetComponent<EnemyHunterController>().stepSource = hunterStepSource;
+            enemy.GetComponent<EnemyHunterController>().attackClip = hunterAttackClip;
+            enemy.GetComponent<EnemyHunterController>().attackSource = hunterAttackSource;
+            enemy.GetComponent<EnemyHunterController>().audioDistance = hunterAudioDistance;
         }
         enemy.AddComponent<NavMeshAgent>();
         enemy.GetComponent<NavMeshAgent>().Warp(pos);

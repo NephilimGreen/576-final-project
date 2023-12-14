@@ -11,8 +11,16 @@ public class EnemyPatrollerController : MonoBehaviour
     // used for determining if player is on current floor
     public int floor;
     public float storey_height;
+    public AudioClip stepClip;
+    public AudioSource stepSource;
+    public float stepSoundCooldown = (2.0f / 3.0f);
+    private float currentStepSoundCooldown = 0.0f;
+    public AudioClip attackClip;
+    public AudioSource attackSource;
+    public float audioDistance;
 
     NavMeshAgent agent;
+    GameObject player;
 
     // properties of PATROLLER enemy
     private Vector3[] patrolPoints = new Vector3[3];
@@ -23,6 +31,7 @@ public class EnemyPatrollerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        player = GameObject.Find("PLAYER");
         agent = transform.GetComponent<NavMeshAgent>();
         agent.speed = walkSpeed;
         agent.acceleration = 12;
@@ -53,15 +62,29 @@ public class EnemyPatrollerController : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        currentStepSoundCooldown -= Time.deltaTime;
+        if(currentStepSoundCooldown <= 0.0f)
+        {
+            if (EnemyUtility.IsDestOnFloor(player.transform.position, floor, storey_height) &&
+                (Vector3.Distance(player.transform.position, transform.position) < audioDistance))
+            {
+                stepSource.PlayOneShot(stepClip);
+            }
+            currentStepSoundCooldown = stepSoundCooldown * (1 + Random.Range(-0.15f, 0.15f));
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.name.Equals(MazeRenderer.PLAYER_NAME))
         {
-            // temporarily just teleport back to start on collision
             transform.GetComponent<Animator>().SetBool("run", false);
             transform.GetComponent<Animator>().SetBool("walk", false);
             transform.GetComponent<Animator>().SetBool("punch", true);
-            // collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            attackSource.PlayOneShot(attackClip);
+            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
         }
     }
 }
