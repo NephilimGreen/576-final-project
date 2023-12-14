@@ -95,7 +95,7 @@ public class MazeRenderer : MonoBehaviour
     public GameObject Patroller;
     public GameObject Chaser;
     public GameObject Hunter;
-
+    private CanvasManager canvasManager;
     public RectTransform healthBar;
     public float healthBarWidth, healthBarHeight;
     private void Awake()
@@ -106,6 +106,7 @@ public class MazeRenderer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canvasManager = canvas.GetComponent<CanvasManager>();
         playerHealth = playerStartingHealth;
         speedBoostTimer = 0.0f;
         playerSpeedModifier = 1.0f;
@@ -573,6 +574,7 @@ public class MazeRenderer : MonoBehaviour
         if (playerHealth <= 0)
         {
             // DISPLAY LOSS SCREEN
+            canvasManager.showLossScreen();
         }
         speedBoostTimer -= Time.deltaTime;
         if (speedBoostTimer <= 0.0f)

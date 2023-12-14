@@ -54,7 +54,7 @@ public class CanvasManager : MonoBehaviour
         victoryMenu.transform.SetAsLastSibling();
         isPaused = true;
     }
-    void showLossScreen(){
+    public void showLossScreen(){
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         lossMenu.SetActive(true);
