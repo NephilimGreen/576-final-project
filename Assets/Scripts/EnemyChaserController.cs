@@ -127,8 +127,7 @@ public class EnemyChaserController : MonoBehaviour
             transform.GetComponent<Animator>().SetBool("run", false);
             transform.GetComponent<Animator>().SetBool("walk", false);
             transform.GetComponent<Animator>().SetBool("punch", true);
-            attackSource.PlayOneShot(attackClip);
-            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            // collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
         }
     }
 }
