@@ -38,25 +38,25 @@ Ryan:
     Hand-drew the victory prize image
 
 Kevin:
-    Wrote all of Equation.cs for parsing math equations into solutions (~140 lines)
+    Wrote all of Equation.cs (~140 lines)
     Wrote ~50 out of 70 lines of MazeRenderer.createEnemy()
-    Wrote the healthbar update function renderHealthBar() in MazeRenderer.cs (lines 622-627)
-    Baked each floor's NavMeshSurface in MazeRenderer.cs (~30 lines in the render() function)
+    Wrote renderHealthBar() function in MazeRenderer.cs (lines 622-627)
+    Baked each floor's NavMeshSurface and placed NavMeshAgents in MazeRenderer.cs (lines 561-568)
     Imported RigidBodyFirstPersonController from Assignment 5
-    Wrote all of EnemyUtils.cs for various enemy pathfinding and destination-selecting functions on the NavMeshSurface (~105 lines)
-    Wrote various enemy behaviors logic in EnemyChaserController.cs, EnemyPatrollerController.cs, and EnemyHunterController.cs:
+    Wrote all of EnemyUtility.cs (~105 lines)
+    Implemented behavior logic for all enemies:
         MoveToRandomPoint() coroutine (lines 109-122) and most of SlowUpdate() function (lines 80-107) in EnemyChaserController.cs
-        Most of MoveToPatrolPoints() coroutine in EnemyPatrollerController.cs (lines 50-66)
+        Most of MoveToPatrolPoints() coroutine (lines 50-66) in EnemyPatrollerController.cs
         MoveToRandomPoint() coroutine (lines 115-127) and most of SlowUpdate() function (lines 78-113) in EnemyHunterController.cs
         Sounds for the above 3 scripts were added by Ryan and animations were added by Eric
     Wrote pausing functionality in CanvasManager.cs (lines 39-52, 70-91)
-    Wrote all of DraggableItem.cs (~35 lines) and ItemSlot.cs (~32 lines) for inventory management UI with draggable items
+    Wrote all of DraggableItem.cs (~35 lines) and ItemSlot.cs (~33 lines)
         Followed Youtube tutorial: https://www.youtube.com/watch?v=kWRyZ3hb1Vc
         Created UI GameObject hierarchy for hotbar, chest inventory, and equation solving menus
-    Wrote all of Chest.cs for implementing chest storage inventory and equation solving inventory, both with draggable items (~100 lines)
+    Wrote all of Chest.cs (~100 lines)
     Rewrote Ryan's Inventory.cs to implement a hotbar with draggable item movement (lines 22-59)
-    Wrote all of PickUpAnimation.cs for animations on item pickups (~30 lines)
-    Wrote all of PoofTrapAnimation.cs for animations on poof traps (~30 lines)
+    Wrote all of PickUpAnimation.cs (~30 lines)
+    Wrote all of PoofTrapAnimation.cs (~30 lines)
     Added win/lose sounds, and sounds for dragging items around in inventory
 
 Eric:
