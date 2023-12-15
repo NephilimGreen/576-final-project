@@ -1800,6 +1800,7 @@ MonoBehaviour:
   speedPercentage: 7.5
   healthMinCount: 6
   speedMinCount: 6
+  menuParameters: {fileID: 11400000, guid: 1769cafd320f01c47b8e534c175860f0, type: 2}
 --- !u!114 &288121573
 MonoBehaviour:
   m_ObjectHideFlags: 0

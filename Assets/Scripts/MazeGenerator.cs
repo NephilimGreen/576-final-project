@@ -101,6 +101,8 @@ public class MazeGenerator : MonoBehaviour
     public static readonly (int, int) DOWN = (0, -1);
     public static readonly (int, int)[] DIRECTION_COORDS = { LEFT, RIGHT, UP, DOWN };
     private string[][,][] grids;
+    public menuParams menuParameters;
+
     // grids has the following structure:
     //  dim 0 : floors
     //  dim 1 and dim 2 : width and height coordinates (respectively) of cells in the corresponding floor
@@ -380,6 +382,9 @@ public class MazeGenerator : MonoBehaviour
 
     public string[][,][] Generate()
     {
+        numFloors = menuParameters.numFloors;
+        usePoofTraps = menuParameters.useProofTraps;
+        usePitTraps = menuParameters.useFloorTraps;
         if (optionalSeed > 0)
         {
             UnityEngine.Random.InitState(optionalSeed);
