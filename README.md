@@ -21,3 +21,4 @@ Eric:
     Wrote all of CharacterControllerScript.cs, (not used after switching to first person game).
     Implemented models for all enemies.
     Implemented animations for all enemies.
+    Designed and implemented all of the start menu, pause menu, victory menu, and loss menu.
