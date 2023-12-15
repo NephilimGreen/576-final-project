@@ -245,6 +245,9 @@ public class MazeRenderer : MonoBehaviour
         pickup.GetComponent<PickUp>().pingClip = itemPingClip;
         pickup.GetComponent<PickUp>().pingSource = itemPingSource;
 
+        // attach the script to make items float up/down
+        backGroundBox.AddComponent<PickUpAnimation>();
+
         return pickup;
     }
 
@@ -440,6 +443,10 @@ public class MazeRenderer : MonoBehaviour
                         barrier.GetComponent<PoofTrap>().maze = maze;
                         barrier.GetComponent<PoofTrap>().warpClip = poofWarpClip;
                         barrier.GetComponent<PoofTrap>().warpSource = poofWarpSource;
+
+                        // attach the script to make poof traps pulsate
+                        barrier.AddComponent<PoofTrapAnimation>();
+
                         // poof traps should not be considered in baking the NavMeshSurface
                         barrier.transform.SetParent(floorObj.transform);
                     }

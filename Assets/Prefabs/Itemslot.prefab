@@ -113,3 +113,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7bc99e3af3f3914da69c5f56480b5c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dropItemClip: {fileID: 8300000, guid: b6dc3013dcd0eda40891f1fb2a7a47e9, type: 3}

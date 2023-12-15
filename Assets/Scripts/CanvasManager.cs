@@ -22,11 +22,16 @@ public class CanvasManager : MonoBehaviour
     public GameObject pauseMenu;
     public GameObject centerDot;
     public bool isPaused = false;
-    
+
+    // AudioSource for various sounds
+    public AudioSource canvasAudioSource;
+    public AudioClip lockedChestSound;
+    public AudioClip unlockedChestSound;    
 
     // Start is called before the first frame update
     void Start()
     {
+        canvasAudioSource = transform.GetComponent<AudioSource>();
         ResumeGame();
     }
 
@@ -52,7 +57,7 @@ public class CanvasManager : MonoBehaviour
         victoryMenu.SetActive(true);
         centerDot.SetActive(false);
         victoryMenu.transform.SetAsLastSibling();
-        isPaused = true;
+        Time.timeScale = 0.0f;
     }
     public void showLossScreen(){
         Cursor.lockState = CursorLockMode.None;
@@ -60,7 +65,7 @@ public class CanvasManager : MonoBehaviour
         lossMenu.SetActive(true);
         centerDot.SetActive(false);
         lossMenu.transform.SetAsLastSibling();
-        isPaused = true;
+        Time.timeScale = 0.0f;
     }
     void PauseGame()
     {

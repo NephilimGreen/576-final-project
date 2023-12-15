@@ -149,3 +149,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   parentAfterDrag: {fileID: 0}
   text: {fileID: 670192152558548948}
+  pickUpItemClip: {fileID: 8300000, guid: 80aed2f2d0b45824fbcf9dc8b08928bc, type: 3}

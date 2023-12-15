@@ -90,12 +90,12 @@ public class Chest : MonoBehaviour
         {
             // TODO: some win state
             canvasManager.showVictoryScreen();
-            Debug.Log("Correct");
+            canvasManager.canvasAudioSource.PlayOneShot(canvasManager.unlockedChestSound);
 
         }
         else
         {
-            Debug.Log("Incorrect");
+            canvasManager.canvasAudioSource.PlayOneShot(canvasManager.lockedChestSound);
         }
     }
 }
