@@ -45,7 +45,6 @@ public static class Equation
             // left/right values are not integers = badly formatted
             if (!int.TryParse(equationList[index - 1], out num1) || !int.TryParse(equationList[index + 1], out num2))
             {
-                Debug.Log("Not int");
                 return int.MaxValue;
             }
             // special case for division
@@ -53,7 +52,6 @@ public static class Equation
             // C# automatically rounds division to int, so check for attempted non-integer division here
             if (equationList[index] == "÷")
             {
-                Debug.Log("div");
                 if (num2 == 0) return int.MaxValue;
                 if (num1 % num2 != 0) return int.MaxValue;
             }

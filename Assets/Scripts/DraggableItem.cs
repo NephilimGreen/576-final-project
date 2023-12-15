@@ -10,6 +10,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 {
     public Transform parentAfterDrag;
     public TMP_Text text;
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         // used to snap the DraggableItem back to its correct parent ItemSlot upon release

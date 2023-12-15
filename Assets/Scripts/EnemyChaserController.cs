@@ -123,7 +123,6 @@ public class EnemyChaserController : MonoBehaviour
     {
         if (collision.gameObject.name.Equals(MazeRenderer.PLAYER_NAME))
         {
-            // temporarily just teleport back to start on collision
             transform.GetComponent<Animator>().SetBool("run", false);
             transform.GetComponent<Animator>().SetBool("walk", false);
             transform.GetComponent<Animator>().SetBool("punch", true);
