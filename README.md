@@ -1,6 +1,7 @@
 This is the term project for COMPSCI 576 by Ryan Fletcher, Kevin Chen, and Eric Stevens
 
-If you're not launching in the main menu when you start the game, or if clicking "Start Maze" doesn't bring you to the maze, add both the main menu scene and the SampleScene to the build path in File>>Build Settings, load the Main Menu scene, and unload the SampleScene scene before launching the game.
+Before starting the game, make sure MainMenu scene is loaded and SampleScene scene is either not loaded or unloaded. Maximize the gameplay screen.
+If something is broken, make sure both the main menu scene and the SampleScene are in the build path in File>>Build Settings.
 
 Individual Contributions:
 
