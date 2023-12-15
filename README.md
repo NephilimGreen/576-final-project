@@ -1,4 +1,5 @@
 This is the term project for COMPSCI 576 by Ryan Fletcher, Kevin Chen, and Eric Stevens
+Link to the GitHub page: https://github.com/NephilimGreen/576-final-project
 
 Before starting the game, make sure MainMenu scene is loaded and SampleScene scene is either not loaded or unloaded. Maximize the gameplay screen.
 If something is broken, make sure both the main menu scene and the SampleScene are in the build path in File>>Build Settings.
