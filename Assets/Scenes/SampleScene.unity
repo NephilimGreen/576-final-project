@@ -1764,16 +1764,16 @@ MonoBehaviour:
   optionalSeed: 0
   numFloors: 3
   digitPercentages:
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
-  - 1
+  - 1.5
+  - 1.5
+  - 1.5
+  - 1.5
+  - 1.5
+  - 1.5
+  - 1.5
+  - 1.5
+  - 1.5
+  - 1.5
   digitMinimums: 01000000010000000100000001000000010000000100000001000000010000000100000001000000
   addPercentage: 2
   addMinCount: 1
@@ -1789,17 +1789,19 @@ MonoBehaviour:
   poofPercentage: 7.5
   useChasers: 1
   chaserPercentage: 0.5
-  chaserMinCount: 1
+  chaserMinCount: 3
   usePatrollers: 1
   patrollerPercentage: 0.5
-  patrollerMinCount: 1
+  patrollerMinCount: 3
   useHunters: 1
-  hunterPercentage: 0.5
+  hunterPercentage: 0.2
   hunterMinCount: 1
   healthPercentage: 3.75
   speedPercentage: 7.5
+  powerPercentage: 1
   healthMinCount: 6
   speedMinCount: 6
+  powerMinCount: 0
   menuParameters: {fileID: 11400000, guid: 1769cafd320f01c47b8e534c175860f0, type: 2}
 --- !u!114 &288121573
 MonoBehaviour:
@@ -1824,6 +1826,7 @@ MonoBehaviour:
   playerHealth: 0
   playerSpeedModifier: 0
   speedBoostTimer: 0
+  powerBoostTimer: 0
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}
@@ -1870,6 +1873,8 @@ MonoBehaviour:
   itemPingSource: {fileID: 772908551}
   poofWarpClip: {fileID: 8300000, guid: b8d1a1e65e163334587659769493fb9d, type: 3}
   poofWarpSource: {fileID: 1882780042}
+  enemyDestructionClip: {fileID: 8300000, guid: 57d3acc3f37d4764885e013f777cfcfa, type: 3}
+  enemyDestructionSource: {fileID: 1292363667}
   inventoryItemPrefab: {fileID: 3282551336138412272, guid: d310366f1cb186140bdcfba3f742869c, type: 3}
   Patroller: {fileID: 1301377216}
   Chaser: {fileID: 890153477}
@@ -7984,8 +7989,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 124.6}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: 153}
+  m_SizeDelta: {x: 160, y: 55}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1154269012
 MonoBehaviour:
@@ -8020,7 +8025,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Congratulations on completing Masons Maze
+  m_Text: 'Congratulations on completing Masons Maze.
+
+    Stick this on your fridge!'
 --- !u!222 &1154269013
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8595,6 +8602,134 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 488139314478344133, guid: b185861e847931840afb5df14af5861e, type: 3}
   m_PrefabInstance: {fileID: 1262843324}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1292363666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1292363668}
+  - component: {fileID: 1292363667}
+  m_Layer: 0
+  m_Name: EnemyDestructionSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1292363667
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292363666}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 57d3acc3f37d4764885e013f777cfcfa, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1292363668
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1292363666}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.859241, y: 0.9087791, z: -4.693969}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1301377215
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13080,3 +13215,4 @@ SceneRoots:
   - {fileID: 772908552}
   - {fileID: 1882780043}
   - {fileID: 631809193}
+  - {fileID: 1292363668}

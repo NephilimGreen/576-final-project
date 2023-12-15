@@ -51,8 +51,10 @@ public class MazeGenerator : MonoBehaviour
     public int hunterMinCount;
     public float healthPercentage;
     public float speedPercentage;
+    public float powerPercentage;
     public int healthMinCount;
     public int speedMinCount;
+    public int powerMinCount;
 
     // Initialize here or in Start()
     public static readonly string EMPTY = " ";
@@ -65,7 +67,8 @@ public class MazeGenerator : MonoBehaviour
     public static readonly string PIT_TRAP = "↓";
     public static readonly string POOF_TRAP = "⌖";
     public static readonly string HEALTH_BOOST = "♥"; //♡
-    public static readonly string SPEED_BOST = "⇪"; //↑
+    public static readonly string SPEED_BOOST = "⇪"; //↑
+    public static readonly string POWER_BOOST = "✮"; //★
     public static readonly string CHASER = "C";
     public static readonly string PATROLLER = "P";
     public static readonly string HUNTER = "H";
@@ -83,8 +86,8 @@ public class MazeGenerator : MonoBehaviour
     private float[] enemyPercentages;
     private int[] enemyCounts = { 0, 0, 0 };
     private int[] enemyMinimums;
-    public static readonly string[] boosts = { HEALTH_BOOST, SPEED_BOST };
-    public static readonly Color[] boostColors = { Color.red, Color.green };
+    public static readonly string[] boosts = { HEALTH_BOOST, SPEED_BOOST, POWER_BOOST };
+    public static readonly Color[] boostColors = { Color.red, Color.green, Color.yellow };
     private float[] boostPercentages;
     private int[] boostCounts = { 0, 0, 0 };
     private int[] boostMinumums;
@@ -178,6 +181,11 @@ public class MazeGenerator : MonoBehaviour
     private void removeWall(string[,][] grid, int w, int h, (int, int) direction)
     {
         grid[w, h][directionIndex(direction)] = FLOOR;
+    }
+
+    private bool isInBounds(int x, int y, int minX, int maxX, int minY, int maxY)
+    {
+        return !((x < minX) || (x > maxX) || (y < minY) || (y > maxY));
     }
 
     private string[,][] makeGrid(int width, int height, int centerWidth, int centerHeight, bool pits, bool poofs, int floor, string[,][] floor_above)
@@ -292,7 +300,7 @@ public class MazeGenerator : MonoBehaviour
                     }
                 }
                 if((!pits && grid[i, j][directionIndex(CENTER)].Contains(PIT_TRAP)) ||
-                    (!poofs && grid[i, j][directionIndex(CENTER)].Contains(POOF_TRAP)) ||
+                    (!poofs && grid[i, j][directionIndex(CENTER)].Contains(POOF_TRAP) && !isInBounds(i, j, centerWideStart, centerWideEnd, centerHighStart, centerHighEnd)) ||
                     ((grid[i, j][directionIndex(CENTER)].Contains(PIT_TRAP) || grid[i, j][directionIndex(CENTER)].Contains(POOF_TRAP)) && (openNeighbors > 2)) ||
                     ((floor == 0) && grid[i, j][directionIndex(CENTER)].Contains(PIT_TRAP)) ||
                     (grid[i, j][directionIndex(CENTER)].Contains(POOF_TRAP) && (floor_above != null) && floor_above[i, j][directionIndex(CENTER)].Contains(PIT_TRAP)) ||
@@ -412,8 +420,8 @@ public class MazeGenerator : MonoBehaviour
         trapMinimums = new[] { pitTrapsMinCount, poofTrapsMinCount };
         enemyPercentages = new[] { chaserPercentage, patrollerPercentage, hunterPercentage };
         enemyMinimums = new[] { chaserMinCount, patrollerMinCount, hunterMinCount };
-        boostPercentages = new[] { healthPercentage, speedPercentage };
-        boostMinumums = new[] { healthMinCount, speedMinCount };
+        boostPercentages = new[] { healthPercentage, speedPercentage, powerPercentage };
+        boostMinumums = new[] { healthMinCount, speedMinCount, powerMinCount };
         specialFloorPercentages = new[] { digitPercentages, operatorPercentages, trapPercentages, enemyPercentages, boostPercentages };
         specialFloorCounts = new[] { digitCounts, operatorCounts, trapCounts, enemyCounts, boostCounts };
         specialFloorMinimums = new[] { digitMinimums, operatorMinimums, trapMinimums, enemyMinimums, boostMinumums };

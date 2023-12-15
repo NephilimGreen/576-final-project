@@ -75,10 +75,10 @@ public class mainMenu : MonoBehaviour
     public void setProofTraps(){
         useProofs = !useProofs;
         if(useProofs){
-            proofText.text = "Proof Traps:\nEnabled";
+            proofText.text = "Teleport Traps:\nEnabled";
         }
         else{
-            proofText.text = "Proof Traps:\nDisabled";
+            proofText.text = "Teleport Traps:\nDisabled";
         }
     }
     

@@ -43,10 +43,16 @@ public class PickUp : MonoBehaviour
                     processed = true;
                     processedNow = true;
                 }
-                else if(text.text.Equals(MazeGenerator.SPEED_BOST))
+                else if(text.text.Equals(MazeGenerator.SPEED_BOOST))
                 {
                     renderer.playerSpeedModifier += MazeRenderer.SPEED_BOOST_MODIFIER;
                     renderer.speedBoostTimer += MazeRenderer.SPEED_BOOST_TIME;
+                    processed = true;
+                    processedNow = true;
+                }
+                else if(text.text.Equals(MazeGenerator.POWER_BOOST))
+                {
+                    renderer.powerBoostTimer += MazeRenderer.POWER_BOOST_TIME;
                     processed = true;
                     processedNow = true;
                 }

@@ -19,6 +19,8 @@ public class EnemyHunterController : MonoBehaviour
     private float currentStepSoundCooldown = 0.0f;
     public AudioClip attackClip;
     public AudioSource attackSource;
+    public AudioClip destructionClip;
+    public AudioSource destructionSource;
     public float audioDistance;
 
     GameObject player;
@@ -128,15 +130,24 @@ public class EnemyHunterController : MonoBehaviour
     {
         if (collision.gameObject.name.Equals(MazeRenderer.PLAYER_NAME))
         {
-            transform.GetComponent<Animator>().SetBool("run", false);
-            transform.GetComponent<Animator>().SetBool("walk", false);
-            transform.GetComponent<Animator>().SetBool("punch", true);
-            // Debug.Log("Hit");
-            attackSource.PlayOneShot(attackClip);
-            collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
+            if (renderer.powerBoostTimer > 0)
+            {
+                Destroy(gameObject);
+                destructionSource.PlayOneShot(destructionClip);
+            }
+            else
+            {
+                transform.GetComponent<Animator>().SetBool("run", false);
+                transform.GetComponent<Animator>().SetBool("walk", false);
+                transform.GetComponent<Animator>().SetBool("punch", true);
+                // Debug.Log("Hit");
+                attackSource.PlayOneShot(attackClip);
+                collision.gameObject.transform.position = new Vector3(0, storey_height, 0);
 
-            // decrement health
-            renderer.playerHealth -= 1;
+                // decrement health
+                renderer.playerHealth -= 1;
+                renderer.speedBoostTimer = 0.0f;
+            }
         }
     }
 }

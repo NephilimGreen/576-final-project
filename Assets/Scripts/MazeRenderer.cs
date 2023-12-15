@@ -33,8 +33,10 @@ public class MazeRenderer : MonoBehaviour
     public int playerHealth;
     public static readonly float SPEED_BOOST_MODIFIER = 0.5f;
     public static readonly float SPEED_BOOST_TIME = 4.0f;  // Seconds
+    public static readonly float POWER_BOOST_TIME = 5.0f;  // Seconds
     public float playerSpeedModifier;
     public float speedBoostTimer;
+    public float powerBoostTimer;
     public static string PLAYER_NAME = "PLAYER";
     private float playerHeight;
     public Bounds bounds;
@@ -87,6 +89,8 @@ public class MazeRenderer : MonoBehaviour
     public AudioSource itemPingSource;
     public AudioClip poofWarpClip;
     public AudioSource poofWarpSource;
+    public AudioClip enemyDestructionClip;
+    public AudioSource enemyDestructionSource;
 
     public GameObject inventoryItemPrefab;
 
@@ -109,6 +113,7 @@ public class MazeRenderer : MonoBehaviour
         canvasManager = canvas.GetComponent<CanvasManager>();
         playerHealth = playerStartingHealth;
         speedBoostTimer = 0.0f;
+        powerBoostTimer = 0.0f;
         playerSpeedModifier = 1.0f;
 
         if (defaultFont != null && arrowFont != null)
@@ -257,7 +262,7 @@ public class MazeRenderer : MonoBehaviour
         cornerBlock.name = MazeGenerator.WALL;
         cornerBlock.transform.localScale = new Vector3(corner_thickness_x, storey_height + RENDER_EPSILON, corner_thickness_z);
         cornerBlock.transform.position = position;
-        cornerBlock.GetComponent<Renderer>().material.color = floorColors[floor];
+        cornerBlock.GetComponent<Renderer>().material.color = floorColors[floor % wallMaterials.Length];
         cornerBlock.GetComponent<Renderer>().material = wallMaterials[floor % wallMaterials.Length];
         cornerBlock.GetComponent<Renderer>().material.mainTextureScale = new Vector2(0.75f * corner_thickness_x / widthUnitSize, 0.75f);
 
@@ -283,6 +288,8 @@ public class MazeRenderer : MonoBehaviour
             enemy.GetComponent<EnemyChaserController>().attackSource = chaserAttackSource;
             enemy.GetComponent<EnemyChaserController>().audioDistance = chaserAudioDistance;
             enemy.GetComponent<EnemyChaserController>().renderer = this;
+            enemy.GetComponent<EnemyChaserController>().destructionClip = enemyDestructionClip;
+            enemy.GetComponent<EnemyChaserController>().destructionSource = enemyDestructionSource;
         }
         else if (tileType == MazeGenerator.PATROLLER)
         {
@@ -299,6 +306,8 @@ public class MazeRenderer : MonoBehaviour
             enemy.GetComponent<EnemyPatrollerController>().attackSource = patrollerAttackSource;
             enemy.GetComponent<EnemyPatrollerController>().audioDistance = patrollerAudioDistance;
             enemy.GetComponent<EnemyPatrollerController>().renderer = this;
+            enemy.GetComponent<EnemyPatrollerController>().destructionClip = enemyDestructionClip;
+            enemy.GetComponent<EnemyPatrollerController>().destructionSource = enemyDestructionSource;
         }
         else
         {
@@ -315,6 +324,8 @@ public class MazeRenderer : MonoBehaviour
             enemy.GetComponent<EnemyHunterController>().attackSource = hunterAttackSource;
             enemy.GetComponent<EnemyHunterController>().audioDistance = hunterAudioDistance;
             enemy.GetComponent<EnemyHunterController>().renderer = this;
+            enemy.GetComponent<EnemyHunterController>().destructionClip = enemyDestructionClip;
+            enemy.GetComponent<EnemyHunterController>().destructionSource = enemyDestructionSource;
         }
         enemy.AddComponent<NavMeshAgent>();
         enemy.GetComponent<NavMeshAgent>().Warp(pos);
@@ -390,7 +401,7 @@ public class MazeRenderer : MonoBehaviour
                         block.name = MazeGenerator.FLOOR;
                         block.transform.localScale = new Vector3(bounds.size[0] / width + RENDER_EPSILON, floor_height, bounds.size[2] / length + RENDER_EPSILON);
                         block.transform.position = new Vector3(centerX, floorY, centerZ);
-                        block.GetComponent<Renderer>().material.color = floorColors[f];
+                        block.GetComponent<Renderer>().material.color = floorColors[f % wallMaterials.Length];
                         if ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1))
                         {
                             block.GetComponent<Renderer>().material.color = START_TILE_COLOR;
@@ -473,7 +484,7 @@ public class MazeRenderer : MonoBehaviour
                         block.name = MazeGenerator.WALL;
                         block.transform.localScale = new Vector3(bounds.size[0] / width + RENDER_EPSILON, storey_height + RENDER_EPSILON, wall_thickness_z);
                         block.transform.position = new Vector3(centerX, wallY, upZ);
-                        block.GetComponent<Renderer>().material.color = ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1)) ? START_TILE_COLOR : floorColors[f];
+                        block.GetComponent<Renderer>().material.color = ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1)) ? START_TILE_COLOR : floorColors[f % wallMaterials.Length];
                         block.GetComponent<Renderer>().material = wallMaterials[f % wallMaterials.Length];
 
                         if ((i > 0) && (j < floor.GetLength(1) - 1) &&
@@ -501,7 +512,7 @@ public class MazeRenderer : MonoBehaviour
                         block.name = MazeGenerator.WALL;
                         block.transform.localScale = new Vector3(bounds.size[0] / width + RENDER_EPSILON, storey_height + RENDER_EPSILON, wall_thickness_z);
                         block.transform.position = new Vector3(centerX, wallY, downZ);
-                        block.GetComponent<Renderer>().material.color = ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1)) ? START_TILE_COLOR : floorColors[f];
+                        block.GetComponent<Renderer>().material.color = ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1)) ? START_TILE_COLOR : floorColors[f % wallMaterials.Length];
                         block.GetComponent<Renderer>().material = wallMaterials[f % wallMaterials.Length];
 
                         if ((i > 0) && (j > 0) &&
@@ -529,7 +540,7 @@ public class MazeRenderer : MonoBehaviour
                         block.name = MazeGenerator.WALL;
                         block.transform.localScale = new Vector3(wall_thickness_x, storey_height + RENDER_EPSILON, bounds.size[2] / length + RENDER_EPSILON);
                         block.transform.position = new Vector3(rightX, wallY, centerZ);
-                        block.GetComponent<Renderer>().material.color = ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1)) ? START_TILE_COLOR : floorColors[f];
+                        block.GetComponent<Renderer>().material.color = ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1)) ? START_TILE_COLOR : floorColors[f % wallMaterials.Length];
                         block.GetComponent<Renderer>().material = wallMaterials[f % wallMaterials.Length];
                         // wall blocks should be considered in baking the NavMeshSurface
                         block.transform.SetParent(navMeshSurface.transform);
@@ -540,7 +551,7 @@ public class MazeRenderer : MonoBehaviour
                         block.name = MazeGenerator.WALL;
                         block.transform.localScale = new Vector3(wall_thickness_x, storey_height + RENDER_EPSILON, bounds.size[2] / length + RENDER_EPSILON);
                         block.transform.position = new Vector3(leftX, wallY, centerZ);
-                        block.GetComponent<Renderer>().material.color = ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1)) ? START_TILE_COLOR : floorColors[f];
+                        block.GetComponent<Renderer>().material.color = ((f == 0) && (i == generator.start.Item1) && (j == generator.start.Item1)) ? START_TILE_COLOR : floorColors[f % wallMaterials.Length];
                         block.GetComponent<Renderer>().material = wallMaterials[f % wallMaterials.Length];
                         // wall blocks should be considered in baking the NavMeshSurface
                         block.transform.SetParent(navMeshSurface.transform);
@@ -574,7 +585,7 @@ public class MazeRenderer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        minimaps[(int)(fps_player_obj.transform.position.y / storey_height)].imgObject.GetComponent<RectTransform>().SetAsLastSibling();
+        minimaps[Mathf.Max(0, (int)(fps_player_obj.transform.position.y / storey_height))].imgObject.GetComponent<RectTransform>().SetAsLastSibling();
         playerPointer.transform.SetAsLastSibling();
         playerPointer.GetComponent<RectTransform>().anchoredPosition = new Vector2((-minimapWidth / 2.0f) * (1 + (fps_player_obj.transform.position.x / bounds.max[0])), (-minimapHeight / 2.0f) * (1 + (fps_player_obj.transform.position.z / bounds.max[2])));
         playerPointer.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, (180 - fps_player_obj.transform.rotation.eulerAngles.y) % 360.0f);
@@ -588,6 +599,11 @@ public class MazeRenderer : MonoBehaviour
         {
             speedBoostTimer = 0.0f;
             playerSpeedModifier = 1.0f;
+        }
+        powerBoostTimer -= Time.deltaTime;
+        if(powerBoostTimer <= 0.0f)
+        {
+            powerBoostTimer = 0.0f;
         }
         RigidbodyFirstPersonController controller = fps_player_obj.GetComponent<RigidbodyFirstPersonController>();
         controller.movementSettings.RunMultiplier = playerSpeedModifier;

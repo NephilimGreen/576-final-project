@@ -27,7 +27,7 @@ public class PoofTrap : MonoBehaviour
         if(collision.gameObject.name.Equals(MazeRenderer.PLAYER_NAME))
         {
             int teleportFloor = floor;
-            while(teleportFloor == floor)
+            while((teleportFloor == floor) && (maze.Length > 1))
             {
                 teleportFloor = Random.Range(0, maze.Length);
                 Debug.Log("Random: " + teleportFloor);
@@ -46,7 +46,7 @@ public class PoofTrap : MonoBehaviour
             collision.gameObject.transform.position = new Vector3(bounds.min[0] + (corner.Item1 * bounds.size[0] / width) + 0.5f,
                                                                   bounds.min[1] + (teleportFloor * storey_height + (storey_height / 2)),
                                                                   bounds.min[2] + (corner.Item2 * bounds.size[2] / length) + 0.5f);
-            warpSource.PlayOneShot(warpClip);
+            warpSource.PlayOneShot(warpClip, 0.5f);
         }
     }
 }
