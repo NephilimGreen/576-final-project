@@ -4103,7 +4103,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 4, y: -600}
+  m_AnchoredPosition: {x: 4, y: -650}
   m_SizeDelta: {x: 280, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1309578568
@@ -4126,10 +4126,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Scattered throughout the maze are power ups to help you. \nRed Hearts:
-    Grant healing when your health is low.\nGreen Up Arrows: Grant a temporary burst
-    of speed.\nYellow Teleporters: Running into a teleporter will instantly teleport
-    you to a random location on a random floor of the maze."
+  m_text: "Scattered throughout the maze are power ups to help you. \nRed Heart Items:
+    Grant healing when your health is low.\nGreen Arrow Items: Grant a temporary
+    burst of speed.\nYellow Star Items: Grant temporary invincibility - enemies will
+    explode if they attack you.\nLarge Yellow Teleporters: Running into a teleporter
+    will instantly teleport you to a random end of another random floor of the maze."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -4156,8 +4157,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 19
+  m_fontSizeBase: 19
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
